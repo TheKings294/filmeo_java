@@ -37,7 +37,7 @@ public class SecurityConfig {
                 .formLogin((form) -> form
                         .loginPage("/login")
                         .loginProcessingUrl("/perform_login")
-                        .defaultSuccessUrl("/home", true)
+                        .defaultSuccessUrl("/home", false)
                         .failureUrl("/login?error=true")
                         .permitAll()
                 )
@@ -60,6 +60,7 @@ public class SecurityConfig {
                 .exceptionHandling((ex) -> ex
                         .accessDeniedPage("/access-denied")
                 );
+
         return http.build();
     }
 
