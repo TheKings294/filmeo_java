@@ -1,0 +1,55 @@
+/* Netflix-inspired custom styles */
+
+/* Ensure body and root have black background */
+body,
+html,
+#root {
+    background-color: #000000;
+    color: #ffffff;
+}
+
+/* Smooth scrolling */
+html {
+    scroll-behavior: smooth;
+}
+
+/* Custom scrollbar for dark theme */
+::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+}
+
+::-webkit-scrollbar-track {
+    background: #171717;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #404040;
+    border-radius: 5px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #525252;
+}
+
+/* Text selection */
+::selection {
+    background-color: rgba(220, 38, 38, 0.3);
+    color: #ffffff;
+}
+
+/* Focus visible for accessibility */
+*:focus-visible {
+    outline: 2px solid #dc2626;
+    outline-offset: 2px;
+}
+
+/* Remove default button styles */
+button {
+    -webkit-tap-highlight-color: transparent;
+}
+
+/* Image loading state */
+img {
+    background-color: #171717;
+}
