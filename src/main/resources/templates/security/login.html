@@ -1,7 +1,10 @@
 <!DOCTYPE html>
-<html lang="fr" xmlns:th="http://www.thymeleaf.org">
-<body class="min-h-screen flex items-center justify-center text-white">
-    <main th:fragment="cotennt">
+<html lang="fr" xmlns:th="http://www.thymeleaf.org" th:replace="~{base :: layout(~{::section})}">
+<head>
+    <title>CineStream | Login</title>
+</head>
+<body>
+    <section class="min-h-screen flex items-center justify-center text-white">
         <div class="w-full max-w-md bg-neutral-900 rounded-2xl p-8 shadow-lg">
 
             <!-- Title -->
@@ -10,8 +13,20 @@
                 Sign in to your CineStream account
             </p>
 
+            <div th:if="${error}" class="error text-red-500 text-center">
+                Invalid username or password!
+            </div>
+
+            <div th:if="${param.logout}" class="success text-green-500 text-center">
+                You have been logged out successfully.
+            </div>
+
+            <div th:if="${param.registered}" class="success text-green-500 text-center">
+                Registration successful! Please login.
+            </div>
+
             <!-- Login form -->
-            <form th:action="@{/login}" th:object="${user}" method="post" class="space-y-5">
+            <form th:action="@{/perform_login}" method="post" class="space-y-5">
 
                 <!-- Email -->
                 <div>
@@ -21,7 +36,6 @@
                                 type="email"
                                 name="email"
                                 placeholder="Enter your email"
-                                th:field="*{email}"
                                 required
                                 class="w-full bg-neutral-800 border border-neutral-700 rounded-lg py-3 px-4 pl-10 text-sm focus:outline-none focus:ring-2 focus:ring-red-600"
                         />
@@ -39,7 +53,6 @@
                                 type="password"
                                 name="password"
                                 placeholder="Enter your password"
-                                th:field="*{password}"
                                 required
                                 class="w-full bg-neutral-800 border border-neutral-700 rounded-lg py-3 px-4 pl-10 text-sm focus:outline-none focus:ring-2 focus:ring-red-600"
                         />
@@ -68,6 +81,6 @@
 
             <hr class="my-6 border-neutral-700">
         </div>
-    </main>
+    </section>
 </body>
 </html>
