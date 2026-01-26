@@ -9,17 +9,17 @@
 
     <main class="p-8">
         <div>
-            <h1 class="text-center text-8xl mb-8">Movies</h1>
+            <h1 class="text-center text-8xl mb-8">Series</h1>
         </div>
 
-        <div th:if="${movies != null and !#lists.isEmpty(movies)}"
+        <div th:if="${series != null and !#lists.isEmpty(series)}"
              class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-6">
 
-            <th:block th:each="movie : ${movies}">
+            <th:block th:each="serie : ${series}">
                 <div th:replace="fragments/media-card :: mediaCard(
-                 ${movie.title},
-                 ${movie.posterURL},
-                 'MOVIE',
+                 ${serie.title},
+                 ${serie.posterURL},
+                 'SERIE',
                  ${0}
                  )">
                 </div>
@@ -27,9 +27,9 @@
 
         </div>
 
-        <div th:if="${movies == null or #lists.isEmpty(movies)}"
+        <div th:if="${series == null or #lists.isEmpty(series)}"
              class="text-center text-gray-400 mt-10">
-            <p>No movies found 🎬</p>
+            <p>No series found 🎬</p>
         </div>
     </main>
 

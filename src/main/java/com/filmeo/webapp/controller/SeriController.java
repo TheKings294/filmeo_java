@@ -1,6 +1,6 @@
 package com.filmeo.webapp.controller;
 
-import com.filmeo.webapp.model.service.MovieService;
+import com.filmeo.webapp.model.dto.SeriDTO;
 import com.filmeo.webapp.model.service.SeriService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -8,18 +8,16 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
 @Controller
-public class HomeController {
-    @Autowired
-    private MovieService movieService;
-
+public class SeriController {
     @Autowired
     private SeriService seriService;
 
-    @GetMapping("/")
-    public String showHome(
+    @GetMapping("/series")
+    public String showSeries(
             Model model
     ) {
-        model.addAttribute("content", "public/home");
+        model.addAttribute("series", seriService.selectAll().stream().map(SeriDTO::new).toList());
+        model.addAttribute("content", "public/series");
 
         return "base";
     }

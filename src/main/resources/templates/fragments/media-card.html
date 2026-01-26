@@ -10,8 +10,8 @@
   - rating
   - year
 -->
-<div th:fragment="mediaCard(title, image, type, rating, year)"
-     class="w-60 bg-neutral-900 rounded-2xl overflow-hidden shadow-lg hover:scale-[1.02] transition cursor-pointer">
+<div th:fragment="mediaCard(title, image, type, rating)"
+     class="w-60 bg-neutral-900 rounded-2xl overflow-hidden shadow-lg hover:scale-[1.02] hover:border-1 hover:border-red-500 transition cursor-pointer">
 
     <!-- Poster -->
     <div class="h-80 w-full overflow-hidden">
@@ -47,12 +47,6 @@
             </span>
             <span class="text-gray-400">/10</span>
         </div>
-
-        <!-- Year -->
-        <p class="text-gray-500 text-sm"
-           th:text="${year}">
-            2023
-        </p>
 
     </div>
 

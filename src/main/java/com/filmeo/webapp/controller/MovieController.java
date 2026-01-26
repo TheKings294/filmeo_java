@@ -1,10 +1,13 @@
 package com.filmeo.webapp.controller;
 
+import com.filmeo.webapp.model.dto.MovieDTO;
 import com.filmeo.webapp.model.service.MovieService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+
+import java.util.List;
 
 @Controller
 public class MovieController {
@@ -16,7 +19,8 @@ public class MovieController {
             Model model
 
     ) {
-        model.addAttribute("movies", movieService.selectAll());
+        List<MovieDTO> movieDTOS = movieService.selectAll().stream().map(MovieDTO::new).toList();
+        model.addAttribute("movies", movieDTOS);
         model.addAttribute("content","public/movies");
 
         return "base";

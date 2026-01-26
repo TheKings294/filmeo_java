@@ -127,6 +127,7 @@ public class RefillDb {
             Movie movie = new Movie();
             movie.setTitle(faker.book().title());
             movie.setResume(faker.lorem().sentence(80));
+            movie.setPosterURL(faker.internet().avatar());
             movie.setRealisator(humanRepository.findAll().get(getRandom(0, humanRepository.findAll().size() - 1)));
 
             for (int j = 0; j < getRandom(1, 10); j++) {
@@ -163,6 +164,7 @@ public class RefillDb {
             Seri seri = new Seri();
             seri.setTitle(faker.book().title());
             seri.setResume(faker.lorem().sentence(80));
+            seri.setPosterURL(faker.internet().avatar());
             seri.setStaus(i % 2 == 0 ? SeriStatusEnum.FINISH : SeriStatusEnum.IN_PROGRESS);
             seri.setSeasons(getRandom(1, 8));
             seri.setEpisode(seri.getSeasons() * 20);
