@@ -44,5 +44,5 @@ public class Seri extends BaseContent {
     private List<Nationality> nationalities = new ArrayList<Nationality>();
 
     @OneToMany(mappedBy = "seri")
-    private List<PlatformSeri> platformMovies = new ArrayList<PlatformSeri>();
+    private List<PlatformSeri> platformSeris = new ArrayList<PlatformSeri>();
 }

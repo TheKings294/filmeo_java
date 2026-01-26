@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<body>
+
+<footer class="bg-[#0a0a0a] border-t border-neutral-800 mt-20">
+    <div class="max-w-7xl mx-auto px-6 py-14">
+
+        <!-- Top section -->
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-10 text-sm">
+
+            <!-- Brand -->
+            <div class="space-y-4">
+                <div class="flex items-center gap-2">
+                    <span class="text-red-600 text-2xl">🎞️</span>
+                    <span class="text-white text-xl font-bold">CineStream</span>
+                </div>
+                <p class="text-gray-400 max-w-xs">
+                    Your ultimate destination for discovering movies and series.
+                </p>
+            </div>
+
+            <!-- Browse -->
+            <div>
+                <h3 class="text-white font-semibold mb-4">Browse</h3>
+                <ul class="space-y-3 text-gray-400">
+                    <li><a th:href="@{/movies}" class="hover:text-white transition">Movies</a></li>
+                    <li><a th:href="@{/series}" class="hover:text-white transition">Series</a></li>
+                    <li><a th:href="@{/trending}" class="hover:text-white transition">Trending</a></li>
+                </ul>
+            </div>
+
+            <!-- Account -->
+            <div>
+                <h3 class="text-white font-semibold mb-4">Account</h3>
+                <ul class="space-y-3 text-gray-400">
+                    <li><a th:href="@{/watchlist}" class="hover:text-white transition">My Watchlist</a></li>
+                    <li><a th:href="@{/settings}" class="hover:text-white transition">Settings</a></li>
+                    <li><a th:href="@{/help}" class="hover:text-white transition">Help Center</a></li>
+                </ul>
+            </div>
+
+            <!-- Social -->
+            <div>
+                <h3 class="text-white font-semibold mb-4">Follow Us</h3>
+                <div class="flex gap-4">
+
+                    <a href="#" class="w-11 h-11 flex items-center justify-center rounded-xl bg-neutral-900 border border-neutral-700 hover:border-neutral-500 transition">
+                        🐦
+                    </a>
+
+                    <a href="#" class="w-11 h-11 flex items-center justify-center rounded-xl bg-neutral-900 border border-neutral-700 hover:border-neutral-500 transition">
+                        📸
+                    </a>
+
+                    <a href="#" class="w-11 h-11 flex items-center justify-center rounded-xl bg-neutral-900 border border-neutral-700 hover:border-neutral-500 transition">
+                        🐙
+                    </a>
+
+                </div>
+            </div>
+
+        </div>
+
+        <!-- Divider -->
+        <div class="border-t border-neutral-800 my-10"></div>
+
+        <!-- Bottom -->
+        <div class="flex flex-col md:flex-row items-center justify-between gap-6 text-sm text-gray-500">
+
+            <p>
+                © <span th:text="${#dates.year(#dates.createNow())}">2026</span>
+                CineStream. All rights reserved.
+            </p>
+
+            <div class="flex gap-6">
+                <a th:href="@{/privacy}" class="hover:text-white transition">Privacy Policy</a>
+                <a th:href="@{/terms}" class="hover:text-white transition">Terms of Service</a>
+                <a th:href="@{/cookies}" class="hover:text-white transition">Cookie Policy</a>
+            </div>
+
+        </div>
+
+    </div>
+</footer>
+
+</body>
+</html>
