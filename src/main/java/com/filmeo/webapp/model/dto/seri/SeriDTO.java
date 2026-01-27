@@ -11,6 +11,7 @@ import java.util.List;
 
 @Data
 public class SeriDTO {
+    private Integer id;
     private String title;
     private String resume;
     private String posterURL;
@@ -23,6 +24,7 @@ public class SeriDTO {
     private List<PlatformSeriesDTO> platformSeris;
 
     public SeriDTO(Seri seri) {
+        this.id = seri.getId();
         this.title = seri.getTitle();
         this.resume = seri.getResume();
         this.posterURL = seri.getPosterURL();

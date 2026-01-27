@@ -43,6 +43,7 @@ public class RefillDb {
         createGenre();
         createMovies();
         createSeries();
+        createReview();
     }
 
     public void createUser(int quantity) {
@@ -112,7 +113,7 @@ public class RefillDb {
                 );
                 human.setDeathDate(convertToLocalDate(deathDate));
             }
-            human.setNationality(nationalityRepository.findAll().get(getRandom(0, 99)));
+            human.setNationality(nationalityRepository.findAll().get(getRandom(0, 98)));
 
             humans.add(human);
         }
@@ -262,6 +263,34 @@ public class RefillDb {
         nationalityRepository.saveAll(nationalities);
     }
 
+    public void createReview() {
+        Set<Review> reviews = new HashSet<>();
+
+        for (int i = 0; i < 100; i++) {
+            Review review = new Review();
+            review.setUser(userRepository.findAll().get(getRandom(0, userRepository.findAll().size() - 1)));
+            review.setComment(faker.lorem().sentence(50));
+            review.setRate(getRandom(1, 10));
+            switch (getRandom(1, 3)) {
+                case 1:
+                    review.setMovie(movieRepository.findAll().get(getRandom(0, movieRepository.findAll().size() -1 )));
+                    break;
+                case 2:
+                    review.setSeri(seriRepository.findAll().get(getRandom(0, seriRepository.findAll().size() -1 )));
+                    break;
+                case 3:
+                    review.setActor(humanRepository.findAll().get(getRandom(0, humanRepository.findAll().size() -1 )));
+                    break;
+                default:
+                    break;
+            }
+
+            reviews.add(review);
+        }
+
+        reviewRepository.saveAll(reviews);
+    }
+
     private String generatePlatformName() {
         // Generate creative platform names using Faker
         String[] prefixes = {
@@ -323,6 +352,7 @@ public class RefillDb {
             platformMovieList.add(platformMovie);
         }
 
+        platformMovieRepository.saveAll(platformMovieList);
         return platformMovieList;
     }
 
@@ -339,6 +369,7 @@ public class RefillDb {
             platformSerisList.add(platformSeri);
         }
 
+        platformSeriRepository.saveAll(platformSerisList);
         return platformSerisList;
     }
 

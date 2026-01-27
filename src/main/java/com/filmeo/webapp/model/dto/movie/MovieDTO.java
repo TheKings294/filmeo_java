@@ -11,6 +11,7 @@ import java.util.List;
 
 @Data
 public class MovieDTO {
+    private Integer id;
     private String title;
     private String resume;
     private String posterURL;
@@ -21,6 +22,7 @@ public class MovieDTO {
     private List<PlatformMoviesDTO> platformMovies;
 
     public MovieDTO(Movie movie) {
+        this.id = movie.getId();
         this.title = movie.getTitle();
         this.resume = movie.getResume();
         this.posterURL = movie.getPosterURL();

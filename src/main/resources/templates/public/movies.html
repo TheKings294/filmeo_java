@@ -13,14 +13,15 @@
         </div>
 
         <div th:if="${movies != null and !#lists.isEmpty(movies)}"
-             class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-6">
+             class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-6">
 
             <th:block th:each="movie : ${movies}">
-                <div th:replace="fragments/media-card :: mediaCard(
+                <div    th:href="@{/movies/{id}(id=${movie.id})}"
+                        th:replace="fragments/media-card :: mediaCard(
                  ${movie.title},
                  ${movie.posterURL},
                  'MOVIE',
-                 ${0}
+                 ${avgByMovieId[movie.id]}
                  )">
                 </div>
             </th:block>
