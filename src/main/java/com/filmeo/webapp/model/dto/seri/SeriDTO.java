@@ -14,7 +14,7 @@ public class SeriDTO {
     private Integer id;
     private String title;
     private String resume;
-    private String posterURL;
+    private String poster;
     private Integer seasons;
     private Integer episode;
     private SeriStatusEnum staus;
@@ -22,12 +22,13 @@ public class SeriDTO {
     private List<HumanLightDTO> casting;
     private List<NationalityLightDTO> nationalities;
     private List<PlatformSeriesDTO> platformSeris;
+    private String type = "SERI";
 
     public SeriDTO(Seri seri) {
         this.id = seri.getId();
         this.title = seri.getTitle();
         this.resume = seri.getResume();
-        this.posterURL = seri.getPosterURL();
+        this.poster = seri.getPosterURL();
         this.seasons = seri.getSeasons();
         this.episode = seri.getEpisode();
         this.staus = seri.getStaus();

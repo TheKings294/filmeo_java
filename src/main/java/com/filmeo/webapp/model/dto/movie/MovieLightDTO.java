@@ -8,13 +8,14 @@ import lombok.Data;
 public class MovieLightDTO {
     private String title;
     private String resume;
-    private String posterURL;
+    private String poster;
     private HumanLightDTO real;
+    private String type = "MOVIE";
 
     public MovieLightDTO(Movie movie) {
         this.title = movie.getTitle();
         this.resume = movie.getResume();
-        this.posterURL = movie.getPosterURL();
+        this.poster = movie.getPosterURL();
         this.real = new HumanLightDTO(movie.getRealisator());
     }
 }

@@ -20,8 +20,8 @@ public class ReviewDTO {
         this.comment = review.getComment();
         this.rate = review.getRate();
         this.user = new UserLightDTO(review.getUser());
-        this.seri = new SeriLightDTO(review.getSeri());
-        this.movie = new MovieLightDTO(review.getMovie());
-        this.human = new HumanLightDTO(review.getActor());
+        this.seri = review.getSeri() != null ? new SeriLightDTO(review.getSeri()) : null;
+        this.movie = review.getMovie() != null ? new MovieLightDTO(review.getMovie()) : null;
+        this.human = review.getActor() != null ? new HumanLightDTO(review.getActor()) : null;
     }
 }

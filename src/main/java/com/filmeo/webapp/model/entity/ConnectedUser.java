@@ -32,4 +32,6 @@ public class ConnectedUser implements UserDetails {
                 .map(SimpleGrantedAuthority::new)
                 .toList();
     }
+
+    public User getUser() {return this.user;}
 }

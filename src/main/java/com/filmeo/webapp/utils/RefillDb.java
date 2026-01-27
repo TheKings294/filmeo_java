@@ -83,15 +83,16 @@ public class RefillDb {
         user2.setPassword(password);
         users.add(user2);
 
+        userRepository.saveAll(users);
+
         roles.add("ADMIN");
         User user = new User();
         user.setRoles(roles);
         user.setPseudo(faker.name().username());
         user.setEmail("admin@test.com");
         user.setPassword(password);
-        users.add(user);
 
-        userRepository.saveAll(users);
+        userRepository.save(user);
     }
 
     public void createHuman(int quantity) {

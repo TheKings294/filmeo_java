@@ -54,4 +54,12 @@ public class ReviewService {
         this.reviewRepository.deleteById(id);
         return true;
     }
+
+    public List<Review> getMovieReviews(Integer id) {
+        return reviewRepository.findReviewsByMovieId(id);
+    }
+
+    public List<Review> getSeriReviews(Integer id) {
+        return reviewRepository.findReviewsBySeriId(id);
+    }
 }

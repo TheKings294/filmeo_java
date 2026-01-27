@@ -11,6 +11,7 @@ import java.util.List;
 
 @Data
 public class HumanDTO {
+    private Integer id;
     private String lastName;
     private String firstName;
     private LocalDate birthDate;
@@ -20,6 +21,7 @@ public class HumanDTO {
     private List<MovieLightDTO> realisation;
 
     public HumanDTO(Human human) {
+        this.id = human.getId();
         this.lastName = human.getLastName();
         this.firstName = human.getFirstName();
         this.birthDate = human.getBirthDate();

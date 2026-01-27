@@ -1,13 +1,24 @@
 package com.filmeo.webapp.controller;
 
+import com.filmeo.webapp.model.dto.genre.GenreDTO;
+import com.filmeo.webapp.model.dto.human.HumanDTO;
+import com.filmeo.webapp.model.dto.platformseries.PlatformSeriesDTO;
+import com.filmeo.webapp.model.dto.review.ReviewDTO;
 import com.filmeo.webapp.model.dto.seri.SeriDTO;
+import com.filmeo.webapp.model.entity.ConnectedUser;
+import com.filmeo.webapp.model.entity.Seri;
+import com.filmeo.webapp.model.service.ReviewService;
 import com.filmeo.webapp.model.service.SeriService;
+import com.filmeo.webapp.model.service.UserService;
 import jakarta.persistence.EntityManager;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -16,6 +27,12 @@ import java.util.stream.Collectors;
 public class SeriController {
     @Autowired
     private SeriService seriService;
+
+    @Autowired
+    private UserService userService;
+
+    @Autowired
+    private ReviewService reviewService;
 
     @Autowired
     private EntityManager entityManager;
@@ -42,7 +59,44 @@ public class SeriController {
 
         model.addAttribute("series", seriService.selectAll().stream().map(SeriDTO::new).toList());
         model.addAttribute("avgBySeriId", avgBySeriId);
-        model.addAttribute("content", "public/series");
+        model.addAttribute("content", "public/seri/series");
+
+        return "base";
+    }
+
+    @GetMapping("/series/{id}")
+    public String showOneSeri(
+            Model model,
+            @PathVariable Integer id,
+            @AuthenticationPrincipal ConnectedUser connectedUser
+    ) {
+        Double avgRate = entityManager.createQuery(
+                        """
+                        SELECT AVG(r.rate)
+                        FROM Review r
+                        WHERE r.seri.id = :seriId
+                        """,
+                        Double.class
+                )
+                .setParameter("seriId", id)
+                .getSingleResult();
+
+        Seri seri = seriService.selectById(id);
+
+        boolean isInWatchList = false;
+        if (connectedUser != null) {
+            isInWatchList = userService.mediaIsInWatchList(connectedUser.getUser().getId(), seri);
+        }
+
+        model.addAttribute("averageRating", avgRate != null ? avgRate : 0.0);
+        model.addAttribute("media", new SeriDTO(seri));
+        model.addAttribute("genres", seri.getGenres().stream().map(GenreDTO::new).toList());
+        model.addAttribute("actors", seri.getCasting().stream().map(HumanDTO::new).toList());
+        model.addAttribute("comments", reviewService.getMovieReviews(seri.getId()).stream().map(ReviewDTO::new).toList());
+        model.addAttribute("platforms", seri.getPlatformSeris().stream().map(PlatformSeriesDTO::new).toList());
+        model.addAttribute("directors", new ArrayList<>());
+        model.addAttribute("inWatchlist", isInWatchList);
+        model.addAttribute("content", "public/seri/serie-description");
 
         return "base";
     }

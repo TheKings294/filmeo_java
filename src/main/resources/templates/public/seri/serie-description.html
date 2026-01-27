@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="fr" xmlns:th="http://www.thymeleaf.org" th:replace="~{base :: layout(~{::section})}">
+<head>
+    <title>CineStream | Movies</title>
+</head>
+<body>
+<section class="bg-black text-white">
+    <div th:replace="~{fragments/navbar :: body}"></div>
+
+    <main class="p-8" th:replace="~{fragments/media-description :: mediaDescription}">
+
+    </main>
+
+
+    <div th:replace="~{fragments/footer :: body}"></div>
+
+</section>
+</body>
+</html>

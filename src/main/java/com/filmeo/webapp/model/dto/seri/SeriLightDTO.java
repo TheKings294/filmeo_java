@@ -9,15 +9,16 @@ import lombok.Data;
 public class SeriLightDTO {
     private String title;
     private String resume;
-    private String posterURL;
+    private String poster;
     private Integer seasons;
     private Integer episode;
     private SeriStatusEnum staus;
+    private String type = "SERI";
 
     public SeriLightDTO(Seri seri) {
         this.title = seri.getTitle();
         this.resume = seri.getResume();
-        this.posterURL = seri.getPosterURL();
+        this.poster = seri.getPosterURL();
         this.seasons = seri.getSeasons();
         this.episode = seri.getEpisode();
         this.staus = seri.getStaus();
