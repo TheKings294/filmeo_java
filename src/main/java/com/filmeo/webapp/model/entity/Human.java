@@ -17,6 +17,9 @@ public class Human extends BaseEntity {
     @Column(nullable = false, length = 100)
     private String firstName;
 
+    @Column(nullable = true)
+    private String profilePicture;
+
     @Column(nullable = false)
     private LocalDate birthDate;
 

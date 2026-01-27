@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="fr" xmlns:th="http://www.thymeleaf.org" th:replace="~{base :: layout(~{::section})}">
+<head>
+    <title>CineStream | Actors</title>
+</head>
+<body>
+<section class="bg-black text-white">
+    <div th:replace="fragments/navbar :: body"></div>
+
+    <main class="min-h-screen bg-black text-white">
+        <div class="sticky top-0 z-10 bg-black/80 backdrop-blur-sm border-b border-neutral-800">
+            <div class="max-w-7xl mx-auto px-4 md:px-8 py-4">
+                <a
+                        th:href="@{/}"
+                        class="flex items-center gap-2 text-neutral-400 hover:text-white transition-colors"
+                >
+                    <!-- Lucide ArrowLeft -->
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2"
+                         viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round"
+                              d="M15 19l-7-7 7-7"/>
+                    </svg>
+                    <span>Back</span>
+                </a>
+            </div>
+        </div>
+
+        <!-- Profile Section -->
+        <div class="max-w-7xl mx-auto px-4 md:px-8 py-8 md:py-12">
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-12">
+
+                <!-- Profile Picture -->
+                <div>
+                    <div
+                            class="aspect-square bg-neutral-900 rounded-2xl border border-neutral-800
+               flex items-center justify-center overflow-hidden"
+                    >
+                        <img
+                                th:if="${human.profilePicture != null}"
+                                th:src="${human.profilePicture}"
+                                th:alt="${human.firstName + ' ' + human.lastName}"
+                                class="w-full h-full object-cover"
+                        />
+
+                        <!-- Fallback icon -->
+                        <svg th:if="${human.profilePicture == null}"
+                             class="w-24 h-24 text-neutral-700"
+                             fill="none" stroke="currentColor" stroke-width="1.5"
+                             viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round"
+                                  d="M15.75 7.5a3.75 3.75 0 11-7.5 0
+                   3.75 3.75 0 017.5 0z"/>
+                            <path stroke-linecap="round" stroke-linejoin="round"
+                                  d="M4.5 20.25a8.25 8.25 0 1115 0"/>
+                        </svg>
+                    </div>
+                </div>
+
+                <!-- Info -->
+                <div class="md:col-span-2">
+                    <h1 class="text-4xl md:text-5xl font-bold mb-6"
+                        th:text="${human.firstName + ' ' + human.lastName}">
+                    </h1>
+
+                    <div class="space-y-4">
+
+                        <!-- Birth -->
+                        <div class="flex items-start gap-3">
+                            <span class="text-red-600 mt-0.5"><i class="fa-solid fa-baby"></i></span>
+                            <div>
+                                <p class="text-neutral-400 text-sm">Born</p>
+                                <p>
+                                    <span th:text="${#temporals.format(human.birthDate, 'MMMM dd, yyyy')}"></span>
+                                    <span th:if="${human.deathDate == null}">
+                                        (Age <span th:text="${age}"></span>)
+                                    </span>
+                                </p>
+                            </div>
+                        </div>
+
+                        <!-- Death -->
+                        <div th:if="${human.deathDate != null}" class="flex items-start gap-3">
+                            <span class="text-red-600 mt-0.5"><i class="fa-solid fa-skull"></i></span>
+                            <div>
+                                <p class="text-neutral-400 text-sm">Died</p>
+                                <p>
+                                    <span th:text="${#temporals.format(human.deathDate, 'MMMM dd, yyyy')}"></span>
+                                    (Age <span th:text="${age}"></span>)
+                                </p>
+                            </div>
+                        </div>
+
+                        <!-- Nationality -->
+                        <div th:if="${human.nationality != null}" class="flex items-start gap-3">
+                            <span class="text-red-600 mt-0.5"><i class="fa-solid fa-map-pin"></i></span>
+                            <div>
+                                <p class="text-neutral-400 text-sm">Nationality</p>
+                                <p th:text="${human.nationality.name}"></p>
+                            </div>
+                        </div>
+
+                        <!-- Gender -->
+                        <div class="flex items-start gap-3">
+                            <span class="text-red-600 mt-0.5"><i class="fa-solid fa-user"></i></span>
+                            <div>
+                                <p class="text-neutral-400 text-sm">Gender</p>
+                                <p class="capitalize" th:text="${human.gender}"></p>
+                            </div>
+                        </div>
+
+                        <!-- Filmography Count -->
+                        <div class="flex items-start gap-3">
+                            <span class="text-red-600 mt-0.5"><i class="fa-solid fa-clapperboard"></i></span>
+                            <div>
+                                <p class="text-neutral-400 text-sm">Filmography</p>
+                                <p>
+                                    <span th:text="${filmography}"></span>
+                                    <span th:text="${filmography == 1 ? 'credit' : 'credits'}"></span>
+                                </p>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+            <!-- Directed -->
+            <div th:if="${!directedContent.isEmpty()}" class="mb-12">
+                <h2 class="text-2xl font-bold mb-6">Directed</h2>
+
+                <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-6">
+                    <div th:each="content : ${directedContent}">
+                        <a th:href="@{${content.type == 'MOVIE' ? '/movies/{id}' : '/series/{id}'} (id=${content.id})}">
+                            <div th:replace="fragments/media-card ::
+                            mediaCard(${content.title}, ${content.poster}, ${content.type},
+                            ${content.type == 'MOVIE' ? avgByMovieId[content.id] : avgBySeriId[content.id]})"></div>
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Acted In -->
+            <div th:if="${!actedContent.isEmpty()}">
+                <h2 class="text-2xl font-bold mb-6">Acted In</h2>
+
+                <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-6">
+                    <div th:each="content : ${actedContent}">
+                        <a th:href="@{${content.type == 'MOVIE' ? '/movies/{id}' : '/series/{id}'} (id=${content.id})}">
+                            <div th:replace="fragments/media-card ::
+                            mediaCard(${content.title}, ${content.poster}, ${content.type},
+                            ${content.type == 'MOVIE' ? avgByMovieId[content.id] : avgBySeriId[content.id]})"></div>
+                        </a>
+                    </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Empty State -->
+            <div th:if="${filmography == 0}" class="text-center py-12">
+                <div class="text-neutral-700 text-6xl mb-4">🎬</div>
+                <p class="text-neutral-400">No filmography available</p>
+            </div>
+
+        </div>
+    </main>
+
+
+    <div th:replace="fragments/footer :: body"></div>
+
+</section>
+</body>
+</html>

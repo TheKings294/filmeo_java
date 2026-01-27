@@ -11,6 +11,7 @@ import java.time.LocalDate;
 public class HumanLightDTO {
     private String lastName;
     private String firstName;
+    private String profilePicture;
     private LocalDate birthDate;
     private LocalDate deathDate;
     private GenderEnum gender;
@@ -19,6 +20,7 @@ public class HumanLightDTO {
     public HumanLightDTO(Human human) {
         this.lastName = human.getLastName();
         this.firstName = human.getFirstName();
+        this.profilePicture = human.getProfilePicture();
         this.birthDate = human.getBirthDate();
         this.deathDate = human.getDeathDate();
         this.gender = human.getGender();

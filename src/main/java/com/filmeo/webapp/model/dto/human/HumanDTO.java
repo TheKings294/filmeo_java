@@ -14,6 +14,7 @@ public class HumanDTO {
     private Integer id;
     private String lastName;
     private String firstName;
+    private String profilePicture;
     private LocalDate birthDate;
     private LocalDate deathDate;
     private GenderEnum gender;
@@ -24,6 +25,7 @@ public class HumanDTO {
         this.id = human.getId();
         this.lastName = human.getLastName();
         this.firstName = human.getFirstName();
+        this.profilePicture = human.getProfilePicture();
         this.birthDate = human.getBirthDate();
         this.deathDate = human.getDeathDate();
         this.gender = human.getGender();

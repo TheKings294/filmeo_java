@@ -4,6 +4,7 @@ import com.filmeo.webapp.error.BusinessException;
 import com.filmeo.webapp.error.ErrorType;
 import com.filmeo.webapp.model.entity.Movie;
 import com.filmeo.webapp.model.repository.MovieRepository;
+import jakarta.persistence.EntityManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -13,6 +14,9 @@ import java.util.List;
 public class MovieService {
     @Autowired
     private MovieRepository movieRepository;
+
+    @Autowired
+    private EntityManager entityManager;
 
     public List<Movie> selectAll() {
         return this.movieRepository.findAll();
@@ -53,5 +57,22 @@ public class MovieService {
 
         this.movieRepository.deleteById(id);
         return true;
+    }
+
+    public List<Movie> getMoviesByActor(Integer actorId) {
+        return movieRepository.findMoviesByActorId(actorId);
+    }
+
+    public Double avgRate(Integer id) {
+        return entityManager.createQuery(
+                        """
+                        SELECT AVG(r.rate)
+                        FROM Review r
+                        WHERE r.movie.id = :movieId
+                        """,
+                        Double.class
+                )
+                .setParameter("movieId", id)
+                .getSingleResult();
     }
 }

@@ -102,6 +102,7 @@ public class RefillDb {
             Human human = new Human();
             human.setFirstName(faker.name().firstName());
             human.setLastName(faker.name().lastName());
+            human.setProfilePicture(faker.internet().avatar());
             human.setGender(i % 2 == 0 ? GenderEnum.MALE : GenderEnum.FEMALE);
             Date birthDate = faker.date().birthday(20, 100);
             human.setBirthDate(convertToLocalDate(birthDate));
