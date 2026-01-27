@@ -16,14 +16,16 @@
              class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-6">
 
             <th:block th:each="movie : ${movies}">
-                <div    th:href="@{/movies/{id}(id=${movie.id})}"
-                        th:replace="fragments/media-card :: mediaCard(
+                <a th:href="@{/movies/{id}(id=${movie.id})}">
+                    <div th:replace="fragments/media-card :: mediaCard(
                  ${movie.title},
-                 ${movie.posterURL},
+                 ${movie.poster},
                  'MOVIE',
                  ${avgByMovieId[movie.id]}
                  )">
-                </div>
+                    </div>
+                </a>
+
             </th:block>
 
         </div>
