@@ -45,4 +45,7 @@ public class Seri extends BaseContent {
 
     @OneToMany(mappedBy = "seri")
     private List<PlatformSeri> platformSeris = new ArrayList<PlatformSeri>();
+
+    @OneToMany(mappedBy = "seri")
+    private List<Review> reviews = new ArrayList<>();
 }

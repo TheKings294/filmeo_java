@@ -8,7 +8,122 @@
     <div th:replace="fragments/navbar :: body"></div>
 
     <main class="p-8">
-        <h1 class="text-2xl font-bold">Welcome to CineStream</h1>
+        <div
+                class="relative h-[70vh] bg-cover bg-center"
+                th:style="
+                |background-image:
+                linear-gradient(to bottom, rgba(0,0,0,0.3), rgba(0,0,0,0.9)),
+                url(${featuredContent.poster})|
+                "
+        >
+
+            <div class="absolute bottom-0 left-0 right-0 p-8 md:p-12">
+                <div class="max-w-7xl mx-auto">
+                    <div class="max-w-2xl">
+
+                        <!-- Featured label -->
+                        <div class="flex items-center gap-2 mb-3">
+                            <!-- Trending icon -->
+                            <svg
+                                    class="w-5 h-5 text-red-600"
+                                    fill="none"
+                                    stroke="currentColor"
+                                    stroke-width="2"
+                                    viewBox="0 0 24 24"
+                            >
+                                <path stroke-linecap="round" stroke-linejoin="round"
+                                      d="M3 17l6-6 4 4 8-8M14 7h7v7"/>
+                            </svg>
+
+                            <span class="text-red-600 font-semibold uppercase text-sm tracking-wide">
+            Featured
+          </span>
+                        </div>
+
+                        <!-- Title -->
+                        <h1 class="text-4xl md:text-6xl font-bold text-white mb-4"
+                            th:text="${featuredContent.title}">
+                        </h1>
+
+                        <!-- Synopsis -->
+                        <p
+                                class="text-neutral-300 text-lg mb-6 line-clamp-3"
+                                th:text="${featuredContent.resume}">
+                        </p>
+
+                        <!-- View details -->
+                        <a
+                                th:href="@{/movies/{id}(id=${featuredContent.id})}"
+                                class="inline-block px-8 py-3 bg-red-600 hover:bg-red-700
+                                text-white font-semibold rounded-lg transition-colors"
+                        >
+                            View Details
+                        </a>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <section class="flex flex-col">
+            <h2 class="text-2xl font-bold text-white mb-6 flex items-center gap-2">
+                <svg
+                        class="w-5 h-5"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="2"
+                        viewBox="0 0 24 24"
+                >
+                    <path stroke-linecap="round" stroke-linejoin="round"
+                          d="M3 17l6-6 4 4 8-8M14 7h7v7"/>
+                </svg>
+                Movies Trends
+            </h2>
+            <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4 md:gap-6">
+                <th:block th:each="movie : ${movies}">
+                    <a th:href="@{/movies/{id}(id=${movie.id})}">
+                        <div th:replace="fragments/media-card :: mediaCard(
+                 ${movie.title},
+                 ${movie.poster},
+                 'MOVIE',
+                 ${avgByMovieId[movie.id]}
+                 )">
+                        </div>
+                    </a>
+                </th:block>
+            </div>
+        </section>
+
+
+        <section class="flex flex-col mt-[10rem]">
+            <h2 class="text-2xl font-bold text-white mb-6 flex items-center gap-2">
+                <svg
+                        class="w-5 h-5"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="2"
+                        viewBox="0 0 24 24"
+                >
+                    <path stroke-linecap="round" stroke-linejoin="round"
+                          d="M3 17l6-6 4 4 8-8M14 7h7v7"/>
+                </svg>
+                Series Trends
+            </h2>
+            <div class="grid gap-4 grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 md:gap-6">
+                <th:block th:each="seri : ${series}">
+                    <a th:href="@{/series/{id}(id=${seri.id})}">
+                        <div th:replace="fragments/media-card :: mediaCard(
+                 ${seri.title},
+                 ${seri.poster},
+                 'SERI',
+                 ${avgBySeriId[seri.id]}
+                 )">
+                        </div>
+                    </a>
+                </th:block>
+            </div>
+        </section>
+
     </main>
 
 

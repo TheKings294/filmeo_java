@@ -2,7 +2,9 @@ package com.filmeo.webapp.model.service;
 
 import com.filmeo.webapp.error.BusinessException;
 import com.filmeo.webapp.error.ErrorType;
+import com.filmeo.webapp.model.entity.Movie;
 import com.filmeo.webapp.model.entity.Review;
+import com.filmeo.webapp.model.entity.Seri;
 import com.filmeo.webapp.model.repository.ReviewRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -61,5 +63,21 @@ public class ReviewService {
 
     public List<Review> getSeriReviews(Integer id) {
         return reviewRepository.findReviewsBySeriId(id);
+    }
+
+    public List<Movie> getTop10MovieByStar() {
+        return reviewRepository.findTop10MovieByRating();
+    }
+
+    public List<Movie> getTop10MovieByReview() {
+        return reviewRepository.findTop10MovieByReviewCount();
+    }
+
+    public List<Seri> getTop10SeriByStar() {
+        return reviewRepository.findTop10SeriByRating();
+    }
+
+    public List<Seri> getTop10SeriByReview() {
+        return reviewRepository.findTop10SeriByReviewCount();
     }
 }
