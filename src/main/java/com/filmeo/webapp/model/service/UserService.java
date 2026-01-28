@@ -64,4 +64,6 @@ public class UserService {
     public boolean mediaIsInWatchList(Integer id, Seri seri) {
         return this.selectById(id).getWishListSeri().contains(seri);
     }
+
+
 }

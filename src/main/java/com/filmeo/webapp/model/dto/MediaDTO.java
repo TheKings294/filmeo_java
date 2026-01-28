@@ -28,7 +28,7 @@ public class MediaDTO {
         dto.setTitle(series.getTitle());
         dto.setResume(series.getResume());
         dto.setPoster(series.getPosterURL());
-        dto.setType("SERIES");
+        dto.setType("SERI");
         return dto;
     }
 }

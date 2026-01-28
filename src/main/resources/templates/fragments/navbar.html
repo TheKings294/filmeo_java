@@ -33,7 +33,8 @@
                     Series
                 </a>
                 <a sec:authorize="isAuthenticated() and hasAuthority('USER')"
-                    th:classappend="${#strings.contains(currentPath, '/whatchlist') ? 'text-white font-semibold' : 'text-gray-400'}"
+                   th:href="@{/mywhatchlist}"
+                    th:classappend="${#strings.contains(currentPath, '/mywhatchlist') ? 'text-white font-semibold' : 'text-gray-400'}"
                     class="hover:text-white transition">
                     My WatchList
                 </a>

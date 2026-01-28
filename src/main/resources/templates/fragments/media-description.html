@@ -181,7 +181,7 @@
 
                         <!-- Watchlist -->
                         <div sec:authorize="isAuthenticated() and hasAuthority('USER')">
-                            <form th:action="@{/watchlist/toggle}" method="post">
+                            <form th:action="@{${media.type == 'SERI' ? '/mywhatchlist/toggle/seri/{id}' : '/mywhatchlist/toggle/movie/{id}'}(id=${media.id})}" method="post">
                                 <button class="w-full py-3 rounded-lg font-semibold"
                                         th:classappend="${inWatchlist} ? ' bg-neutral-900 border-2 border-red-600' : ' bg-red-600 hover:bg-red-700'">
                                     <span th:text="${inWatchlist ? 'In Watchlist' : 'Add to Watchlist'}"></span>
