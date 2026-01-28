@@ -22,7 +22,7 @@ import java.util.List;
 import java.util.Map;
 
 @Controller
-public class WhatchList {
+public class WhatchListController {
     @Autowired
     private UserService userService;
 

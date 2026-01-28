@@ -92,7 +92,7 @@ public class SeriController {
         model.addAttribute("media", new SeriDTO(seri));
         model.addAttribute("genres", seri.getGenres().stream().map(GenreDTO::new).toList());
         model.addAttribute("actors", seri.getCasting().stream().map(HumanDTO::new).toList());
-        model.addAttribute("comments", reviewService.getMovieReviews(seri.getId()).stream().map(ReviewDTO::new).toList());
+        model.addAttribute("comments", reviewService.getSeriReviews(seri.getId()).stream().map(ReviewDTO::new).toList());
         model.addAttribute("platforms", seri.getPlatformSeris().stream().map(PlatformSeriesDTO::new).toList());
         model.addAttribute("directors", new ArrayList<>());
         model.addAttribute("inWatchlist", isInWatchList);

@@ -122,11 +122,11 @@
 
                             <!-- Comment form -->
                             <form sec:authorize="isAuthenticated() and hasAuthority('USER')"
-                                  th:action="@{/reviews/add/{id}${media.id}}"
+                                  th:action="@{/reviews/add/{id}(id=${media.id}, redirect=${currentPath})}"
                                   method="post"
                                   class="space-y-3">
 
-                                <input type="text" class="hidden" th:value="${media.type == 'MOVIE' ? 'movie' : 'serie'}">
+                                <input type="text" class="hidden" name="type" th:value="${media.type == 'MOVIE' ? 'movie' : 'serie'}">
 
                             <textarea name="comment"
                               rows="3"
