@@ -9,7 +9,7 @@ import lombok.Data;
 @Entity
 @Data
 public class Review extends BaseEntity {
-    @Column(nullable = false)
+    @Column(nullable = false, columnDefinition = "TEXT")
     private String comment;
 
     @Column(nullable = false)

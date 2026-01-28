@@ -38,4 +38,7 @@ public class Movie extends BaseContent {
 
     @OneToMany(mappedBy = "movie")
     private List<PlatformMovie> platformMovies = new ArrayList<PlatformMovie>();
+
+    @OneToMany(mappedBy = "movie")
+    private List<Review> reviews = new ArrayList<>();
 }

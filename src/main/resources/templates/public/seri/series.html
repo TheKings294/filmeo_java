@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="fr" xmlns:th="http://www.thymeleaf.org" th:replace="~{base :: layout(~{::section})}">
+<head>
+    <title>CineStream | Movies</title>
+</head>
+<body>
+<section class="bg-black text-white">
+    <div th:replace="fragments/navbar :: body"></div>
+
+    <main class="p-8">
+        <div>
+            <h1 class="text-center text-8xl mb-8">Series</h1>
+        </div>
+
+        <div th:if="${series != null and !#lists.isEmpty(series)}"
+             class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-6">
+
+            <th:block th:each="serie : ${series}">
+                <a th:href="@{/series/{id}(id=${serie.id})}" class="no-underline">
+                    <div th:replace="fragments/media-card :: mediaCard(
+                 ${serie.title},
+                 ${serie.poster},
+                 'SERIE',
+                 ${avgBySeriId[serie.id]}
+                 )">
+                    </div>
+                </a>
+            </th:block>
+
+        </div>
+
+        <div th:if="${series == null or #lists.isEmpty(series)}"
+             class="text-center text-gray-400 mt-10">
+            <p>No series found 🎬</p>
+        </div>
+    </main>
+
+
+    <div th:replace="fragments/footer :: body"></div>
+
+</section>
+</body>
+</html>
