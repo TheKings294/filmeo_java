@@ -1,10 +1,56 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>$Title$</title>
-</head>
-<body>
-$END$
-</body>
+<html xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{'admin/layout' :: layout (content=~{ :: content})}">
+
+<div th:fragment="content">
+
+    <!-- Page title -->
+    <div class="mb-6">
+        <h2 class="text-2xl font-bold">Series</h2>
+        <p class="text-neutral-400 text-sm">
+            Manage series available on the platform
+        </p>
+    </div>
+
+    <!-- Table container -->
+    <div class="bg-neutral-950 rounded-lg border border-neutral-800 overflow-hidden">
+
+        <!-- Example table -->
+        <table class="w-full text-left">
+            <thead class="bg-neutral-900 border-b border-neutral-800">
+            <tr>
+                <th class="px-4 py-3 text-sm text-neutral-400">Title</th>
+                <th class="px-4 py-3 text-sm text-neutral-400">Poster</th>
+                <th class="px-4 py-3 text-sm text-neutral-400">Seasons</th>
+                <th class="px-4 py-3 text-sm text-neutral-400">Episodes</th>
+                <th class="px-4 py-3 text-sm text-neutral-400">Status</th>
+                <th class="px-4 py-3 text-sm text-neutral-400">Nationalities</th>
+                <th class="px-4 py-3 text-sm text-neutral-400">Actions</th>
+            </tr>
+            </thead>
+
+            <tbody>
+            <tr class="border-b border-neutral-800">
+                <td class="px-4 py-3">Les goutes de dieu</td>
+                <td class="px-4 py-3">flag</td>
+                <td class="px-4 py-3">3</td>
+                <td class="px-4 py-3">100</td>
+                <td class="px-4 py-3">FINISH</td>
+                <td class="px-4 py-3">French, England</td>
+                <td class="px-4 py-3 text-red-500">Delete</td>
+            </tr>
+            </tbody>
+        </table>
+
+    </div>
+
+    <!-- Note -->
+    <div class="mt-4 p-4 bg-neutral-900 rounded-lg border border-neutral-800">
+        <p class="text-neutral-400 text-sm">
+            <strong class="text-white">Note:</strong>
+            This admin interface is simplified. CRUD forms can be added later.
+        </p>
+    </div>
+
+</div>
 </html>

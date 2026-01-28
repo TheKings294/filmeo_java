@@ -7,7 +7,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
 @Controller
-public class MovieAdminController {
+public class MoviesAdminController {
     @Autowired
     private MovieService movieService;
 
