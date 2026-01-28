@@ -1,15 +1,12 @@
 package com.filmeo.webapp.model.formEntity;
 
-import com.filmeo.webapp.model.entity.Genre;
-import com.filmeo.webapp.model.entity.Human;
-import com.filmeo.webapp.model.entity.Nationality;
-import com.filmeo.webapp.model.entity.PlatformSeri;
 import com.filmeo.webapp.type.SeriStatusEnum;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Data
@@ -35,15 +32,15 @@ public class SeriForm {
 
     @NotNull
     @Min(1)
-    private List<Genre> genres;
+    private List<Integer> genresId = new ArrayList<>();
 
     @NotNull
     @Min(1)
-    private List<Human> casting;
+    private List<Integer> castingId = new ArrayList<>();
 
     @NotNull
     @Min(1)
-    private List<Nationality> nationalities;
+    private List<Integer> nationalitiesId = new ArrayList<>();
 
-    private List<PlatformSeri> platformSeris;
+    private List<PlatformSeriForm> platformSerisId = new ArrayList<>();
 }

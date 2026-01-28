@@ -1,6 +1,5 @@
 package com.filmeo.webapp.model.formEntity;
 
-import com.filmeo.webapp.model.entity.Nationality;
 import com.filmeo.webapp.type.GenderEnum;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.NotNull;
@@ -27,5 +26,5 @@ public class HumanForm {
     @NotNull
     private GenderEnum gender;
 
-    private Nationality nationality;
+    private Integer nationalityId;
 }

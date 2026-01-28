@@ -36,7 +36,7 @@ public class Movie extends BaseContent {
     )
     private List<Nationality> nationalities = new ArrayList<Nationality>();
 
-    @OneToMany(mappedBy = "movie")
+    @OneToMany(mappedBy = "movie", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<PlatformMovie> platformMovies = new ArrayList<PlatformMovie>();
 
     @OneToMany(mappedBy = "movie")
