@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" th:replace="~{base :: layout(~{::body})}">
+<head>
+    <title>Serie form</title>
+</head>
+
+<body class="min-h-screen bg-black">
+
+<!-- HEADER -->
+<div class="border-b border-neutral-800 bg-neutral-950">
+    <div class="max-w-4xl mx-auto px-4 md:px-8 py-6">
+        <h1 class="text-2xl font-bold text-white">Create / Edit Serie</h1>
+        <p class="text-neutral-400 text-sm">Manage serie information</p>
+    </div>
+</div>
+
+<!-- FORM -->
+<div class="max-w-4xl mx-auto px-4 md:px-8 py-8">
+    <form th:action="@{${basePath}(id=${seriId})}"
+          th:width="basePath=${editMode ? '/admin/series/update' + seriId : '/admin/series/new'}"
+          th:object="${seriForm}"
+          method="post"
+          class="space-y-8">
+
+        <!-- GLOBAL ERRORS -->
+        <div th:if="${#fields.hasErrors()}"
+             class="bg-red-900/40 border border-red-600 text-red-300 rounded-lg p-4">
+            <p class="font-semibold mb-2">Please fix the following errors:</p>
+            <ul class="list-disc list-inside text-sm">
+                <li th:each="err : ${#fields.errors('*')}"
+                    th:text="${err}"></li>
+            </ul>
+        </div>
+
+        <!-- BASIC INFO -->
+        <div class="bg-neutral-950 rounded-lg border border-neutral-800 p-6">
+            <h2 class="text-xl font-semibold text-white mb-6">Basic Information</h2>
+
+            <div class="space-y-4">
+
+                <!-- TITLE -->
+                <div>
+                    <label class="block text-sm text-neutral-300 mb-2">Title *</label>
+                    <input type="text"
+                           th:field="*{title}"
+                           class="w-full bg-neutral-900 text-white px-4 py-3 rounded-lg border border-neutral-800"
+                           th:classappend="${#fields.hasErrors('title')} ? 'border-red-600' : ''">
+                    <p th:errors="*{title}" class="text-red-500 text-sm mt-1"></p>
+                </div>
+
+                <!-- RESUME -->
+                <div>
+                    <label class="block text-sm text-neutral-300 mb-2">Synopsis</label>
+                    <textarea rows="4"
+                              th:field="*{resume}"
+                              class="w-full bg-neutral-900 text-white px-4 py-3 rounded-lg border border-neutral-800 resize-none"></textarea>
+                </div>
+
+                <!-- POSTER -->
+                <div>
+                    <label class="block text-sm text-neutral-300 mb-2">Poster URL</label>
+                    <input type="url"
+                           th:field="*{posterURL}"
+                           class="w-full bg-neutral-900 text-white px-4 py-3 rounded-lg border border-neutral-800">
+                </div>
+
+                <!-- SEASONS / EPISODES -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-sm text-neutral-300 mb-2">Seasons *</label>
+                        <input type="number" min="1"
+                               th:field="*{seasons}"
+                               class="w-full bg-neutral-900 text-white px-4 py-3 rounded-lg border border-neutral-800"
+                               th:classappend="${#fields.hasErrors('seasons')} ? 'border-red-600' : ''">
+                        <p th:errors="*{seasons}" class="text-red-500 text-sm mt-1"></p>
+                    </div>
+
+                    <div>
+                        <label class="block text-sm text-neutral-300 mb-2">Episodes *</label>
+                        <input type="number" min="1"
+                               th:field="*{episode}"
+                               class="w-full bg-neutral-900 text-white px-4 py-3 rounded-lg border border-neutral-800"
+                               th:classappend="${#fields.hasErrors('episode')} ? 'border-red-600' : ''">
+                        <p th:errors="*{episode}" class="text-red-500 text-sm mt-1"></p>
+                    </div>
+                </div>
+
+                <!-- STATUS -->
+                <div>
+                    <label class="block text-sm text-neutral-300 mb-2">Status *</label>
+                    <select th:field="*{status}"
+                            class="w-full bg-neutral-900 text-white px-4 py-3 rounded-lg border border-neutral-800"
+                            th:classappend="${#fields.hasErrors('status')} ? 'border-red-600' : ''">
+                        <option value="">-- Select status --</option>
+                        <option th:each="s : ${statuses}"
+                                th:value="${s}"
+                                th:text="${s}"></option>
+                    </select>
+                    <p th:errors="*{status}" class="text-red-500 text-sm mt-1"></p>
+                </div>
+            </div>
+        </div>
+
+        <!-- GENRES -->
+        <div class="bg-neutral-950 rounded-lg border border-neutral-800 p-6">
+            <h2 class="text-xl font-semibold text-white mb-6">Genres</h2>
+            <div class="flex flex-wrap gap-3">
+                <label th:each="g : ${genres}" class="cursor-pointer">
+                    <input type="checkbox"
+                           th:value="${g.id}"
+                           th:field="*{genresId}"
+                           class="hidden peer">
+                    <span class="px-4 py-2 rounded-lg bg-neutral-800 text-neutral-300
+                             peer-checked:bg-red-600 peer-checked:text-white">
+                    <span th:text="${g.name}"></span>
+                </span>
+                </label>
+            </div>
+            <p th:errors="*{genresId}" class="text-red-500 text-sm mt-2"></p>
+        </div>
+
+        <!-- CASTING -->
+        <div class="bg-neutral-950 rounded-lg border border-neutral-800 p-6">
+            <h2 class="text-xl font-semibold text-white mb-6">Actors</h2>
+            <div class="space-y-2 max-h-64 overflow-y-auto">
+                <label th:each="a : ${actors}"
+                       class="flex items-center gap-3 p-3 bg-neutral-900 rounded-lg hover:bg-neutral-800 cursor-pointer">
+                    <input type="checkbox"
+                           th:value="${a.id}"
+                           th:field="*{castingId}"
+                           class="w-4 h-4 text-red-600">
+                    <span class="text-white"
+                          th:text="${a.firstName + ' ' + a.lastName}"></span>
+                </label>
+            </div>
+            <p th:errors="*{castingId}" class="text-red-500 text-sm mt-2"></p>
+        </div>
+
+        <!-- PLATFORMS -->
+        <div class="bg-neutral-950 rounded-lg border border-neutral-800 p-6">
+            <h2 class="text-xl font-semibold text-white mb-6">Streaming Platforms</h2>
+
+            <div th:each="ps, stat : *{platformSerisId}"
+                 class="p-4 bg-neutral-900 rounded-lg border border-neutral-800 mb-4">
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-sm text-neutral-300 mb-2">Platform</label>
+                        <select th:field="*{platformSerisId[__${stat.index}__].platformId}"
+                                class="w-full bg-neutral-800 text-white px-3 py-2 rounded-lg border border-neutral-700">
+                            <option value="">-- Select --</option>
+                            <option th:each="p : ${platforms}"
+                                    th:value="${p.id}"
+                                    th:text="${p.name}"></option>
+                        </select>
+                        <p th:errors="*{platformSerisId[__${stat.index}__].platformId}"
+                           class="text-red-500 text-sm mt-1"></p>
+                    </div>
+
+                    <div>
+                        <label class="block text-sm text-neutral-300 mb-2">End Date</label>
+                        <input type="date"
+                               th:field="*{platformSerisId[__${stat.index}__].endDate}"
+                               class="w-full bg-neutral-800 text-white px-3 py-2 rounded-lg border border-neutral-700">
+
+                        <p th:errors="*{platformSerisId[__${stat.index}__].endDate}"
+                           class="text-red-500 text-sm mt-1"></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ACTIONS -->
+        <div class="flex gap-4">
+            <button type="submit"
+                    class="flex-1 bg-red-600 hover:bg-red-700 text-white px-6 py-3 rounded-lg font-semibold">
+                Save Serie
+            </button>
+
+            <a th:href="@{/admin/series}"
+               class="px-6 py-3 bg-neutral-800 hover:bg-neutral-700 text-white rounded-lg">
+                Cancel
+            </a>
+        </div>
+
+    </form>
+</div>
+
+</body>
+</html>
