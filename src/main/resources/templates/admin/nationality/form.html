@@ -24,7 +24,7 @@
 
 <!-- FORM -->
 <div class="max-w-4xl mx-auto px-4 md:px-8 py-8">
-    <form th:action="${editMode ? '/admin/nationalities/update' + nationalityId : '/admin/nationalities/new'}"
+    <form th:action="${editMode ? '/admin/nationalities/update/' + nationalityId : '/admin/nationalities/new'}"
           th:object="${nationalityForm}"
           method="post"
           class="space-y-8">

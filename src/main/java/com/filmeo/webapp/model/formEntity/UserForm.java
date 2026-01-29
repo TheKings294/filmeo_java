@@ -3,6 +3,8 @@ package com.filmeo.webapp.model.formEntity;
 import jakarta.validation.constraints.*;
 import lombok.Data;
 
+import java.util.List;
+
 @Data
 public class UserForm {
     @NotBlank(message = "The pseudo can not be null")
@@ -12,6 +14,9 @@ public class UserForm {
     @NotBlank(message = "The email can not be null")
     @Email
     private String email;
+
+    @NotNull
+    private List<String> roles;
 
     @NotBlank(message = "The password is required")
     /*@Pattern(regexp = "/^\\S{3,}$/",
