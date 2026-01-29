@@ -12,6 +12,26 @@
         </p>
     </div>
 
+    <section>
+        <a  th:href="@{/admin/genres/new}"
+                class="flex items-center gap-2 px-6 py-3 bg-red-600 hover:bg-red-700 text-white rounded-lg transition-colors whitespace-nowrap">
+            <svg xmlns="http://www.w3.org/2000/svg"
+                 width="24"
+                 height="24"
+                 viewBox="0 0 24 24"
+                 fill="none"
+                 stroke="currentColor"
+                 stroke-width="2"
+                 stroke-linecap="round"
+                 stroke-linejoin="round"
+                 class="lucide lucide-plus-icon lucide-plus">
+                    <path d="M5 12h14"/>
+                    <path d="M12 5v14"/>
+            </svg>
+            Create New
+        </a>
+    </section>
+
     <!-- Table container -->
     <div class="bg-neutral-950 rounded-lg border border-neutral-800 overflow-hidden">
 
@@ -26,9 +46,10 @@
             </thead>
 
             <tbody>
-            <tr class="border-b border-neutral-800">
-                <td class="px-4 py-3">Fiction</td>
-                <td class="px-4 py-3">Lorem impsum</td>
+            <tr     th:each="g : ${genres}"
+                    class="border-b border-neutral-800">
+                <td class="px-4 py-3" th:text="${g.name}">Fiction</td>
+                <td class="px-4 py-3" th:text="${g.description}">Lorem impsum</td>
                 <td class="px-4 py-3 text-red-500">Delete</td>
             </tr>
             </tbody>
