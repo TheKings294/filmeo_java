@@ -6,6 +6,8 @@ import com.filmeo.webapp.model.entity.Genre;
 import com.filmeo.webapp.model.entity.Human;
 import com.filmeo.webapp.model.repository.HumanRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -18,6 +20,10 @@ public class HumanService {
 
     public List<Human> selectAll() {
         return this.humanRepository.findAll();
+    }
+
+    public Page<Human> selectAll(Pageable pageable) {
+        return this.humanRepository.findAll(pageable);
     }
 
     public Human selectById(Integer id) throws BusinessException {

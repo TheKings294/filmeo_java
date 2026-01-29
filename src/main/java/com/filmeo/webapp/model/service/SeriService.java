@@ -6,6 +6,8 @@ import com.filmeo.webapp.model.entity.Seri;
 import com.filmeo.webapp.model.repository.SeriRepository;
 import jakarta.persistence.EntityManager;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -20,6 +22,10 @@ public class SeriService {
 
     public List<Seri> selectAll() {
         return this.seriRepository.findAll();
+    }
+
+    public Page<Seri> selectAll(Pageable pageable) {
+        return this.seriRepository.findAll(pageable);
     }
 
     public Seri selectById(Integer id) throws BusinessException {

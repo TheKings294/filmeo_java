@@ -6,6 +6,8 @@ import com.filmeo.webapp.model.entity.Movie;
 import com.filmeo.webapp.model.repository.MovieRepository;
 import jakarta.persistence.EntityManager;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -20,6 +22,10 @@ public class MovieService {
 
     public List<Movie> selectAll() {
         return this.movieRepository.findAll();
+    }
+
+    public Page<Movie> selectAll(Pageable pageable) {
+        return this.movieRepository.findAll(pageable);
     }
 
     public Movie selectById(Integer id) throws BusinessException {

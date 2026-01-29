@@ -6,6 +6,8 @@ import com.filmeo.webapp.model.entity.Human;
 import com.filmeo.webapp.model.entity.Nationality;
 import com.filmeo.webapp.model.repository.NationalityRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -18,6 +20,10 @@ public class NationalityService {
 
     public List<Nationality> selectAll() {
         return this.nationalityRepository.findAll();
+    }
+
+    public Page<Nationality> selectAll(Pageable pageable) {
+        return this.nationalityRepository.findAll(pageable);
     }
 
     public Nationality selectById(Integer id) throws BusinessException {

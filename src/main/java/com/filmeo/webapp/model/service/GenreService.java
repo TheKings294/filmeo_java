@@ -5,6 +5,8 @@ import com.filmeo.webapp.error.ErrorType;
 import com.filmeo.webapp.model.entity.Genre;
 import com.filmeo.webapp.model.repository.GenreRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -17,6 +19,10 @@ public class GenreService {
 
     public List<Genre> selectAll() {
         return this.genreRepository.findAll();
+    }
+
+    public Page<Genre> selectAll(Pageable pageable) {
+        return genreRepository.findAll(pageable);
     }
 
     public Genre selectById(Integer id) throws BusinessException {
