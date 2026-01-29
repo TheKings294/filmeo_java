@@ -38,15 +38,21 @@ public class NationalitiesAdminController {
     @GetMapping("/admin/nationalities/new")
     public String showForm(Model model) {
         model.addAttribute("nationalityForm", new NationalityForm());
+        model.addAttribute("editMode", false);
+
         return "admin/nationality/form";
     }
 
     @PostMapping("/admin/nationalities/new")
     public String newNationality(
             @Valid NationalityForm nationalityForm,
-            BindingResult bindingResult
+            BindingResult bindingResult,
+            Model model
     ) {
         if (bindingResult.hasErrors()) {
+            model.addAttribute("nationalityForm", nationalityForm);
+            model.addAttribute("editMode", false);
+
             return "admin/nationality/form";
         }
 
@@ -72,6 +78,7 @@ public class NationalitiesAdminController {
 
         model.addAttribute("nationalityForm", nationalityForm);
         model.addAttribute("nationalityId", id);
+        model.addAttribute("editMode", true);
 
         return "admin/nationality/form";
     }
@@ -80,9 +87,14 @@ public class NationalitiesAdminController {
     public String updateNationality(
             @PathVariable Integer id,
             @Valid NationalityForm nationalityForm,
-            BindingResult bindingResult
+            BindingResult bindingResult,
+            Model model
     ) {
         if (bindingResult.hasErrors()) {
+            model.addAttribute("nationalityForm", nationalityForm);
+            model.addAttribute("nationalityId", id);
+            model.addAttribute("editMode", true);
+
             return "admin/nationality/form";
         }
 

@@ -32,21 +32,28 @@ public class PlatformsAdminController {
         Page<StreamingPlatformDTO> page = streamingPlatformService.selectAll(pageable).map(StreamingPlatformDTO::new);
 
         model.addAttribute("platforms", page);
+
         return "admin/platform/platforms";
     }
 
     @GetMapping("/admin/platforms/new")
     public String showForm(Model model) {
         model.addAttribute("platformForm", new PlatformForm());
+        model.addAttribute("editMode", false);
+
         return "admin/platform/form";
     }
 
     @PostMapping("/admin/platforms/new")
     public String newPlatform(
             @Valid PlatformForm platformForm,
-            BindingResult bindingResult
+            BindingResult bindingResult,
+            Model model
     ) {
         if (bindingResult.hasErrors()) {
+            model.addAttribute("platformForm", platformForm);
+            model.addAttribute("editMode", false);
+
             return "admin/platform/form";
         }
 
@@ -74,6 +81,7 @@ public class PlatformsAdminController {
 
         model.addAttribute("platformForm", platformForm);
         model.addAttribute("platformId", id);
+        model.addAttribute("editMode", true);
 
         return "admin/platform/form";
     }
@@ -82,9 +90,14 @@ public class PlatformsAdminController {
     public String updatePlatform(
             @PathVariable Integer id,
             @Valid PlatformForm platformForm,
-            BindingResult bindingResult
+            BindingResult bindingResult,
+            Model model
     ) {
         if (bindingResult.hasErrors()) {
+            model.addAttribute("platformForm", platformForm);
+            model.addAttribute("platformId", id);
+            model.addAttribute("editMode", true);
+
             return "admin/platform/form";
         }
 

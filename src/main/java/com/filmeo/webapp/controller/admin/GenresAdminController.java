@@ -38,8 +38,9 @@ public class GenresAdminController {
             Model model
     ) {
         model.addAttribute("genreForm", new GenreForm());
+        model.addAttribute("editMode", false);
 
-        return "base";
+        return "admin/genre/form";
     }
 
     @PostMapping("/admin/genres/new")
@@ -49,7 +50,9 @@ public class GenresAdminController {
             BindingResult bindingResult
     ) {
         if (bindingResult.hasErrors()) {
-
+            model.addAttribute("genreForm", genreForm);
+            model.addAttribute("editMode", false);
+            return "admin/genre/form";
         }
 
         Genre genre = new Genre();
@@ -71,9 +74,11 @@ public class GenresAdminController {
         genreForm.setName(genre.getName());
         genreForm.setDescription(genre.getDescription());
 
-        model.addAttribute("genres", genreForm);
+        model.addAttribute("genreForm", genreForm);
+        model.addAttribute("genreId", id);
+        model.addAttribute("editMode", true);
 
-        return "base";
+        return "admin/genre/form";
     }
 
     @PostMapping("/admin/genres/update/{id}")
@@ -84,7 +89,10 @@ public class GenresAdminController {
             BindingResult bindingResult
     ) {
         if (bindingResult.hasErrors()) {
-            return "base";
+            model.addAttribute("genreForm", genreForm);
+            model.addAttribute("genreId", id);
+            model.addAttribute("editMode", true);
+            return "admin/genre/form";
         }
 
         Genre updateGenre = genreService.selectById(id);

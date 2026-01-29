@@ -66,6 +66,7 @@ public class SeriesAdminController {
                 nationalityService.selectAll().stream().map(NationalityDTO::new).toList());
         model.addAttribute("platforms",
                 streamingPlatformService.selectAll().stream().map(StreamingPlatformDTO::new).toList());
+        model.addAttribute("editMode", false);
 
         return "admin/seri/form";
     }
@@ -83,6 +84,7 @@ public class SeriesAdminController {
                     nationalityService.selectAll().stream().map(NationalityDTO::new).toList());
             model.addAttribute("platforms",
                     streamingPlatformService.selectAll().stream().map(StreamingPlatformDTO::new).toList());
+            model.addAttribute("editMode", false);
             return "admin/seri/form";
         }
 
@@ -140,10 +142,13 @@ public class SeriesAdminController {
         model.addAttribute("seriForm", seriForm);
         model.addAttribute("seriId", id);
 
-        model.addAttribute("genres", genreService.selectAll());
-        model.addAttribute("castings", humanService.selectAll());
-        model.addAttribute("nationalities", nationalityService.selectAll());
-        model.addAttribute("platforms", streamingPlatformService.selectAll());
+        model.addAttribute("genres", genreService.selectAll().stream().map(GenreDTO::new).toList());
+        model.addAttribute("castings", humanService.selectAll().stream().map(HumanDTO::new).toList());
+        model.addAttribute("nationalities",
+                nationalityService.selectAll().stream().map(NationalityDTO::new).toList());
+        model.addAttribute("platforms",
+                streamingPlatformService.selectAll().stream().map(StreamingPlatformDTO::new).toList());
+        model.addAttribute("editMode", true);
 
         return "admin/seri/form";
     }
@@ -156,6 +161,17 @@ public class SeriesAdminController {
             Model model
     ) {
         if (bindingResult.hasErrors()) {
+            model.addAttribute("seriForm", seriForm);
+            model.addAttribute("seriId", id);
+
+            model.addAttribute("genres", genreService.selectAll().stream().map(GenreDTO::new).toList());
+            model.addAttribute("castings", humanService.selectAll().stream().map(HumanDTO::new).toList());
+            model.addAttribute("nationalities",
+                    nationalityService.selectAll().stream().map(NationalityDTO::new).toList());
+            model.addAttribute("platforms",
+                    streamingPlatformService.selectAll().stream().map(StreamingPlatformDTO::new).toList());
+            model.addAttribute("editMode", true);
+
             return "admin/seri/form";
         }
 

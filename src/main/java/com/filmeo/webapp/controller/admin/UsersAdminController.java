@@ -42,15 +42,19 @@ public class UsersAdminController {
     @GetMapping("/admin/users/new")
     public String showUserForm(Model model) {
         model.addAttribute("userForm", new UserForm());
+        model.addAttribute("editMode", false);
         return "admin/user/form";
     }
 
     @PostMapping("/admin/users/new")
     public String newUser(
+            Model model,
             @Valid UserForm userForm,
             BindingResult bindingResult
     ) {
         if (bindingResult.hasErrors()) {
+            model.addAttribute("userForm", userForm);
+            model.addAttribute("editMode", false);
             return "admin/user/form";
         }
 
@@ -77,6 +81,7 @@ public class UsersAdminController {
 
         model.addAttribute("userForm", userForm);
         model.addAttribute("userId", id);
+        model.addAttribute("editMode", true);
 
         return "admin/user/form";
     }
@@ -85,9 +90,12 @@ public class UsersAdminController {
     public String updateUser(
             @PathVariable Integer id,
             @Valid UserForm userForm,
-            BindingResult bindingResult
+            BindingResult bindingResult,
+            Model model
     ) {
         if (bindingResult.hasErrors()) {
+            model.addAttribute("userForm", userForm);
+            model.addAttribute("editMode", true);
             return "admin/user/form";
         }
 

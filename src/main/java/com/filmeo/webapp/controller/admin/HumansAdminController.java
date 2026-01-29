@@ -47,6 +47,7 @@ public class HumansAdminController {
         model.addAttribute("humanForm", new HumanForm());
         model.addAttribute("nationalities",
                 nationalityService.selectAll().stream().map(NationalityDTO::new).toList());
+        model.addAttribute("editMode", false);
 
         return "admin/human/form";
     }
@@ -61,6 +62,7 @@ public class HumansAdminController {
             model.addAttribute("humanForm", new HumanForm());
             model.addAttribute("nationalities",
                     nationalityService.selectAll().stream().map(NationalityDTO::new).toList());
+            model.addAttribute("editMode", false);
 
             return "admin/human/form";
         }
@@ -92,9 +94,11 @@ public class HumansAdminController {
         humanForm.setBirthDate(human.getBirthDate());
         humanForm.setLastName(human.getLastName());
 
-        model.addAttribute("human", humanForm);
+        model.addAttribute("humanForm", humanForm);
+        model.addAttribute("humanId", id);
         model.addAttribute("nationalities",
                 nationalityService.selectAll().stream().map(NationalityDTO::new).toList());
+        model.addAttribute("editMode", true);
 
         return "admin/human/form ";
     }
@@ -107,9 +111,12 @@ public class HumansAdminController {
             BindingResult bindingResult
     ) {
         if (bindingResult.hasErrors()) {
-            model.addAttribute("human", humanForm);
+            model.addAttribute("humanForm", humanForm);
+            model.addAttribute("humanId", id);
             model.addAttribute("nationalities",
                     nationalityService.selectAll().stream().map(NationalityDTO::new).toList());
+            model.addAttribute("editMode", true);
+
             return "admin/human/form";
         }
 

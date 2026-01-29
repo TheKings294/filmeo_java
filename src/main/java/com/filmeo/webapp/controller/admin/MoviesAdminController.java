@@ -68,6 +68,7 @@ public class MoviesAdminController {
                 nationalityService.selectAll().stream().map(NationalityDTO::new).toList());
         model.addAttribute("platforms",
                 streamingPlatformService.selectAll().stream().map(StreamingPlatformDTO::new).toList());
+        model.addAttribute("editMode", false);
 
         return "admin/movie/form";
     }
@@ -79,11 +80,15 @@ public class MoviesAdminController {
             Model model
     ) {
         if (bindingResult.hasErrors()) {
-            model.addAttribute("genres", genreService.selectAll());
-            model.addAttribute("humans", humanService.selectAll());
-            model.addAttribute("castings", humanService.selectAll());
-            model.addAttribute("nationalities", nationalityService.selectAll());
-            model.addAttribute("platforms", streamingPlatformService.selectAll());
+            model.addAttribute("genres", genreService.selectAll().stream().map(GenreDTO::new).toList());
+            model.addAttribute("humans", humanService.selectAll().stream().map(HumanDTO::new).toList());
+            model.addAttribute("castings", humanService.selectAll().stream().map(HumanDTO::new).toList());
+            model.addAttribute("nationalities",
+                    nationalityService.selectAll().stream().map(NationalityDTO::new).toList());
+            model.addAttribute("platforms",
+                    streamingPlatformService.selectAll().stream().map(StreamingPlatformDTO::new).toList());
+            model.addAttribute("editMode", false);
+
             return "admin/movie/form";
         }
 
@@ -145,6 +150,8 @@ public class MoviesAdminController {
         model.addAttribute("platforms",
                 streamingPlatformService.selectAll().stream().map(StreamingPlatformDTO::new).toList());
 
+        model.addAttribute("editMode", true);
+
         return "admin/movie/form";
     }
 
@@ -156,6 +163,18 @@ public class MoviesAdminController {
             Model model
     ) {
         if (bindingResult.hasErrors()) {
+            model.addAttribute("movieForm", movieForm);
+            model.addAttribute("movieId", id);
+
+            model.addAttribute("genres", genreService.selectAll().stream().map(GenreDTO::new).toList());
+            model.addAttribute("humans", humanService.selectAll().stream().map(HumanDTO::new).toList());
+            model.addAttribute("castings", humanService.selectAll().stream().map(HumanDTO::new).toList());
+            model.addAttribute("nationalities",
+                    nationalityService.selectAll().stream().map(NationalityDTO::new).toList());
+            model.addAttribute("platforms",
+                    streamingPlatformService.selectAll().stream().map(StreamingPlatformDTO::new).toList());
+            model.addAttribute("editMode", true);
+
             return "admin/movie/form";
         }
 
