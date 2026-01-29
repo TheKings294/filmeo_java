@@ -9,6 +9,8 @@ import com.filmeo.webapp.model.entity.*;
 import com.filmeo.webapp.model.formEntity.PlatformSeriForm;
 import com.filmeo.webapp.model.formEntity.SeriForm;
 import com.filmeo.webapp.model.service.*;
+import com.filmeo.webapp.service.CountService;
+import com.filmeo.webapp.type.SeriStatusEnum;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -42,6 +44,9 @@ public class SeriesAdminController {
     @Autowired
     private PlatformSeriService platformSeriService;
 
+    @Autowired
+    private CountService countService;
+
     @GetMapping("/admin/series")
     public String showSeriList(
             Model model,
@@ -52,6 +57,8 @@ public class SeriesAdminController {
         Page<SeriDTO> page = seriService.selectAll(pageable).map(SeriDTO::new);
 
         model.addAttribute("series", page);
+        model.addAttribute("count", countService.getTotalCount());
+
         return "admin/seri/series";
     }
 
@@ -67,7 +74,7 @@ public class SeriesAdminController {
         model.addAttribute("platforms",
                 streamingPlatformService.selectAll().stream().map(StreamingPlatformDTO::new).toList());
         model.addAttribute("editMode", false);
-
+        model.addAttribute("statuses", SeriStatusEnum.values());
         return "admin/seri/form";
     }
 
@@ -85,6 +92,7 @@ public class SeriesAdminController {
             model.addAttribute("platforms",
                     streamingPlatformService.selectAll().stream().map(StreamingPlatformDTO::new).toList());
             model.addAttribute("editMode", false);
+            model.addAttribute("statuses", SeriStatusEnum.values());
             return "admin/seri/form";
         }
 
@@ -149,6 +157,7 @@ public class SeriesAdminController {
         model.addAttribute("platforms",
                 streamingPlatformService.selectAll().stream().map(StreamingPlatformDTO::new).toList());
         model.addAttribute("editMode", true);
+        model.addAttribute("statuses", SeriStatusEnum.values());
 
         return "admin/seri/form";
     }
@@ -171,6 +180,7 @@ public class SeriesAdminController {
             model.addAttribute("platforms",
                     streamingPlatformService.selectAll().stream().map(StreamingPlatformDTO::new).toList());
             model.addAttribute("editMode", true);
+            model.addAttribute("statuses", SeriStatusEnum.values());
 
             return "admin/seri/form";
         }

@@ -4,6 +4,7 @@ import com.filmeo.webapp.model.dto.genre.GenreDTO;
 import com.filmeo.webapp.model.entity.Genre;
 import com.filmeo.webapp.model.formEntity.GenreForm;
 import com.filmeo.webapp.model.service.GenreService;
+import com.filmeo.webapp.service.CountService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -19,6 +20,9 @@ public class GenresAdminController {
     @Autowired
     private GenreService genreService;
 
+    @Autowired
+    private CountService countService;
+
     @GetMapping("/admin/genres")
     public String showGenreList(
             Model model,
@@ -29,6 +33,7 @@ public class GenresAdminController {
         Page<GenreDTO> page = genreService.selectAll(pageable)
                 .map(GenreDTO::new);
         model.addAttribute("genres", page);
+        model.addAttribute("count", countService.getTotalCount());
 
         return "admin/genre/genres";
     }

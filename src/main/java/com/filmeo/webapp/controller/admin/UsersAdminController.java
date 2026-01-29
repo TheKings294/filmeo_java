@@ -4,6 +4,7 @@ import com.filmeo.webapp.model.dto.user.UserDTO;
 import com.filmeo.webapp.model.entity.User;
 import com.filmeo.webapp.model.formEntity.UserForm;
 import com.filmeo.webapp.model.service.UserService;
+import com.filmeo.webapp.service.CountService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -26,16 +27,21 @@ public class UsersAdminController {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
+    @Autowired
+    private CountService countService;
+
     @GetMapping("/admin/users")
     public String showUserList(
             Model model,
             @RequestParam(required = false) Integer pageNumber
     ) {
-        if (pageNumber == null) pageNumber = 1;
+        if (pageNumber == null) pageNumber = 0;
         Pageable pageable = PageRequest.of(pageNumber, 20);
         Page<UserDTO> page = userService.selectAll(pageable).map(UserDTO::new);
 
         model.addAttribute("users", page);
+        model.addAttribute("count", countService.getTotalCount());
+
         return "admin/user/users";
     }
 
@@ -78,6 +84,7 @@ public class UsersAdminController {
         UserForm userForm = new UserForm();
         userForm.setPseudo(user.getPseudo());
         userForm.setEmail(user.getEmail());
+        userForm.setRoles(user.getRoles());
 
         model.addAttribute("userForm", userForm);
         model.addAttribute("userId", id);
@@ -93,7 +100,7 @@ public class UsersAdminController {
             BindingResult bindingResult,
             Model model
     ) {
-        if (bindingResult.hasErrors()) {
+        if (bindingResult.hasErrors() && bindingResult.hasFieldErrors("pseudo") && bindingResult.hasFieldErrors("email")) {
             model.addAttribute("userForm", userForm);
             model.addAttribute("editMode", true);
             return "admin/user/form";
@@ -102,6 +109,7 @@ public class UsersAdminController {
         User user = userService.selectById(id);
         user.setPseudo(userForm.getPseudo());
         user.setEmail(userForm.getEmail());
+        user.setRoles(userForm.getRoles());
 
         if (userForm.getPassword() != null && !userForm.getPassword().isBlank()) {
             user.setPassword(passwordEncoder.encode(userForm.getPassword()));

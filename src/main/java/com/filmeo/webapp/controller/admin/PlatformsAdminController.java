@@ -4,6 +4,7 @@ import com.filmeo.webapp.model.dto.platform.StreamingPlatformDTO;
 import com.filmeo.webapp.model.entity.StreamingPlatform;
 import com.filmeo.webapp.model.formEntity.PlatformForm;
 import com.filmeo.webapp.model.service.StreamingPlatformService;
+import com.filmeo.webapp.service.CountService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -22,6 +23,9 @@ public class PlatformsAdminController {
     @Autowired
     private StreamingPlatformService streamingPlatformService;
 
+    @Autowired
+    private CountService countService;
+
     @GetMapping("/admin/platforms")
     public String showPlatformList(
             Model model,
@@ -33,6 +37,7 @@ public class PlatformsAdminController {
 
         model.addAttribute("platforms", page.getContent());
         model.addAttribute("page", page);
+        model.addAttribute("count", countService.getTotalCount());
 
         return "admin/platform/platforms";
     }

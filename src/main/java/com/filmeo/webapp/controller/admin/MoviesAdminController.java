@@ -9,6 +9,7 @@ import com.filmeo.webapp.model.entity.*;
 import com.filmeo.webapp.model.formEntity.MovieForm;
 import com.filmeo.webapp.model.formEntity.PlatformMovieForm;
 import com.filmeo.webapp.model.service.*;
+import com.filmeo.webapp.service.CountService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -42,6 +43,9 @@ public class MoviesAdminController {
     @Autowired
     private StreamingPlatformService streamingPlatformService;
 
+    @Autowired
+    private CountService countService;
+
     @GetMapping("/admin/movies")
     public String showMovieList(
             Model model,
@@ -52,6 +56,8 @@ public class MoviesAdminController {
         Page<MovieDTO> page = movieService.selectAll(pageable).map(MovieDTO::new);
 
         model.addAttribute("movies", page);
+        model.addAttribute("count", countService.getTotalCount());
+
         return "admin/movie/movies";
     }
 

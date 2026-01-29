@@ -6,6 +6,7 @@ import com.filmeo.webapp.model.entity.Human;
 import com.filmeo.webapp.model.formEntity.HumanForm;
 import com.filmeo.webapp.model.service.HumanService;
 import com.filmeo.webapp.model.service.NationalityService;
+import com.filmeo.webapp.service.CountService;
 import com.filmeo.webapp.type.GenderEnum;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,6 +29,9 @@ public class HumansAdminController {
     @Autowired
     private NationalityService nationalityService;
 
+    @Autowired
+    private CountService countService;
+
     @GetMapping("/admin/humans")
     public String showHumanList(
             Model model,
@@ -38,6 +42,8 @@ public class HumansAdminController {
         Page<HumanDTO> page = humanService.selectAll(pageable).map(HumanDTO::new);
 
         model.addAttribute("humans", page);
+        model.addAttribute("count", countService.getTotalCount());
+
         return "admin/human/humans";
     }
 
@@ -64,6 +70,7 @@ public class HumansAdminController {
             model.addAttribute("humanForm", new HumanForm());
             model.addAttribute("nationalities",
                     nationalityService.selectAll().stream().map(NationalityDTO::new).toList());
+            model.addAttribute("genders", GenderEnum.values());
             model.addAttribute("editMode", false);
 
             return "admin/human/form";
@@ -95,14 +102,16 @@ public class HumansAdminController {
         humanForm.setDeathDate(human.getDeathDate());
         humanForm.setBirthDate(human.getBirthDate());
         humanForm.setLastName(human.getLastName());
+        humanForm.setFirstName(human.getFirstName());
 
         model.addAttribute("humanForm", humanForm);
         model.addAttribute("humanId", id);
         model.addAttribute("nationalities",
                 nationalityService.selectAll().stream().map(NationalityDTO::new).toList());
+        model.addAttribute("genders", GenderEnum.values());
         model.addAttribute("editMode", true);
 
-        return "admin/human/form ";
+        return "admin/human/form";
     }
 
     @PostMapping("/admin/humans/update/{id}")
@@ -117,6 +126,7 @@ public class HumansAdminController {
             model.addAttribute("humanId", id);
             model.addAttribute("nationalities",
                     nationalityService.selectAll().stream().map(NationalityDTO::new).toList());
+            model.addAttribute("genders", GenderEnum.values());
             model.addAttribute("editMode", true);
 
             return "admin/human/form";

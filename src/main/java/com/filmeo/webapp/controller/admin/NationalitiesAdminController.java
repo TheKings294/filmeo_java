@@ -4,6 +4,7 @@ import com.filmeo.webapp.model.dto.nationality.NationalityDTO;
 import com.filmeo.webapp.model.entity.Nationality;
 import com.filmeo.webapp.model.formEntity.NationalityForm;
 import com.filmeo.webapp.model.service.NationalityService;
+import com.filmeo.webapp.service.CountService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -22,6 +23,9 @@ public class NationalitiesAdminController {
     @Autowired
     private NationalityService nationalityService;
 
+    @Autowired
+    private CountService countService;
+
     @GetMapping("/admin/nationalities")
     public String showNationalityList(
             Model model,
@@ -32,6 +36,8 @@ public class NationalitiesAdminController {
         Page<NationalityDTO> page = nationalityService.selectAll(pageable).map(NationalityDTO::new);
 
         model.addAttribute("nationalities", page);
+        model.addAttribute("count", countService.getTotalCount());
+
         return "admin/nationality/nationalities";
     }
 
