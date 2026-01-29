@@ -12,7 +12,7 @@
         </p>
     </div>
 
-    <section>
+    <section class="mb-3">
         <a  th:href="@{/admin/series/new}"
             class="flex items-center gap-2 px-6 py-3 bg-red-600 hover:bg-red-700 text-white rounded-lg transition-colors whitespace-nowrap">
             <svg xmlns="http://www.w3.org/2000/svg"
@@ -55,7 +55,9 @@
                 <td class="px-4 py-3" th:text="${s.seasons}">3</td>
                 <td class="px-4 py-3" th:text="${s.episode}">100</td>
                 <td class="px-4 py-3" th:text="${s.staus}">FINISH</td>
-                <td class="px-4 py-3" th:text="${s.nationalities}">French, England</td>
+                <td class="px-4 py-3">
+                    <span th:each="n : ${s.nationalities}" th:text="${n.name + ', '}"></span>
+                </td>
                 <td class="px-4 py-3 text-red-500">Delete</td>
             </tr>
             </tbody>
