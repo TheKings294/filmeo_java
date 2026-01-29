@@ -1,9 +1,8 @@
 package com.filmeo.webapp.model.formEntity;
 
 import com.filmeo.webapp.type.SeriStatusEnum;
-import jakarta.validation.constraints.Max;
-import jakarta.validation.constraints.Min;
-import jakarta.validation.constraints.NotNull;
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.*;
 import lombok.Data;
 
 import java.util.ArrayList;
@@ -11,36 +10,34 @@ import java.util.List;
 
 @Data
 public class SeriForm {
-    @NotNull
-    @Max(100)
+    @NotBlank(message = "Title is required")
+    @Size(max = 100, message = "Title must not exceed 100 characters")
     private String title;
 
     private String resume;
 
     private String posterURL;
 
-    @NotNull
-    @Min(1)
+    @NotNull(message = "Number of seasons is required")
+    @Min(value = 1, message = "There must be at least 1 season")
     private Integer seasons;
 
-    @NotNull
-    @Min(1)
+    @NotNull(message = "Number of episodes is required")
+    @Min(value = 1, message = "There must be at least 1 episode")
     private Integer episode;
 
-    @NotNull
+    @NotNull(message = "Status is required")
     private SeriStatusEnum status;
 
-    @NotNull
-    @Min(1)
+    @NotEmpty(message = "At least one genre is required")
     private List<Integer> genresId = new ArrayList<>();
 
-    @NotNull
-    @Min(1)
+    @NotEmpty(message = "At least one actor is required")
     private List<Integer> castingId = new ArrayList<>();
 
-    @NotNull
-    @Min(1)
+    @NotEmpty(message = "At least one nationality is required")
     private List<Integer> nationalitiesId = new ArrayList<>();
 
+    @Valid
     private List<PlatformSeriForm> platformSerisId = new ArrayList<>();
 }

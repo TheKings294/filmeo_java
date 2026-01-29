@@ -1,13 +1,13 @@
 package com.filmeo.webapp.model.formEntity;
 
-import jakarta.validation.constraints.Max;
-import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
 import lombok.Data;
 
 @Data
 public class NationalityForm {
-    @NotNull
-    @Max(100)
+    @NotBlank(message = "The name can not be null")
+    @Size(max = 100, message = "The max length is 100")
     private String name;
 
     private String flagUrl;

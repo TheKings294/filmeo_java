@@ -1,16 +1,16 @@
 package com.filmeo.webapp.model.formEntity;
 
-import jakarta.validation.constraints.Max;
-import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
 import lombok.Data;
 
 @Data
 public class PlatformForm {
-    @NotNull
-    @Max(40)
+    @NotBlank(message = "The name can not be null")
+    @Size(max = 40, message = "The max length is 40")
     private String name;
 
-    @NotNull
+    @NotBlank(message = "The link can not be null")
     private String link;
 
     private String logoUrl;
