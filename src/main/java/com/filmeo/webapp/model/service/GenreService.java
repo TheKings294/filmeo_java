@@ -7,6 +7,7 @@ import com.filmeo.webapp.model.repository.GenreRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -25,6 +26,15 @@ public class GenreService {
                         "Genre"
                 )
         );
+    }
+
+    public List<Genre> selectByIds(List<Integer> integers) {
+        List<Genre> genres = new ArrayList<>();
+        integers.forEach(number -> {
+            genres.add(selectById(number));
+        });
+
+        return genres;
     }
 
     public Genre insert(Genre genre) {

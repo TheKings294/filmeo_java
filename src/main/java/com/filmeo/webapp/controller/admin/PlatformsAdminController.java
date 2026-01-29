@@ -1,10 +1,16 @@
 package com.filmeo.webapp.controller.admin;
 
+import com.filmeo.webapp.model.entity.StreamingPlatform;
+import com.filmeo.webapp.model.formEntity.PlatformForm;
 import com.filmeo.webapp.model.service.StreamingPlatformService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 
 @Controller
 public class PlatformsAdminController {
@@ -12,9 +18,77 @@ public class PlatformsAdminController {
     private StreamingPlatformService streamingPlatformService;
 
     @GetMapping("/admin/platforms")
-    public String showPlatformList(
+    public String showPlatformList(Model model) {
+        model.addAttribute("platforms", streamingPlatformService.selectAll());
+        return "admin/platform/platforms";
+    }
+
+    @GetMapping("/admin/platforms/new")
+    public String showForm(Model model) {
+        model.addAttribute("platformForm", new PlatformForm());
+        return "admin/platform/form";
+    }
+
+    @PostMapping("/admin/platforms/new")
+    public String newPlatform(
+            @Valid PlatformForm platformForm,
+            BindingResult bindingResult
+    ) {
+        if (bindingResult.hasErrors()) {
+            return "admin/platform/form";
+        }
+
+        StreamingPlatform platform = new StreamingPlatform();
+        platform.setName(platformForm.getName());
+        platform.setLink(platformForm.getLink());
+        platform.setLogoUrl(platformForm.getLogoUrl());
+
+        streamingPlatformService.insert(platform);
+
+        return "redirect:/admin/platforms";
+    }
+
+    @GetMapping("/admin/platforms/update/{id}")
+    public String showUpdateForm(
+            @PathVariable Integer id,
             Model model
     ) {
-        return "admin/platform/platforms";
+        StreamingPlatform platform = streamingPlatformService.selectById(id);
+
+        PlatformForm platformForm = new PlatformForm();
+        platformForm.setName(platform.getName());
+        platformForm.setLink(platform.getLink());
+        platformForm.setLogoUrl(platform.getLogoUrl());
+
+        model.addAttribute("platformForm", platformForm);
+        model.addAttribute("platformId", id);
+
+        return "admin/platform/form";
+    }
+
+    @PostMapping("/admin/platforms/update/{id}")
+    public String updatePlatform(
+            @PathVariable Integer id,
+            @Valid PlatformForm platformForm,
+            BindingResult bindingResult
+    ) {
+        if (bindingResult.hasErrors()) {
+            return "admin/platform/form";
+        }
+
+        StreamingPlatform platform = streamingPlatformService.selectById(id);
+        platform.setName(platformForm.getName());
+        platform.setLink(platformForm.getLink());
+        platform.setLogoUrl(platformForm.getLogoUrl());
+
+        streamingPlatformService.update(platform);
+
+        return "redirect:/admin/platforms";
+    }
+
+    @PostMapping("/admin/platforms/delete/{id}")
+    public String deletePlatform(@PathVariable Integer id) {
+        streamingPlatformService.delete(id);
+        return "redirect:/admin/platforms";
     }
 }

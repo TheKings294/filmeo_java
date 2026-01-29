@@ -18,7 +18,7 @@ public class MovieForm {
     private String posterURL;
 
     @NotNull
-    private Human real;
+    private Integer realId;
 
     @NotNull
     @Min(1)

@@ -1,10 +1,14 @@
 package com.filmeo.webapp.controller.admin;
 
+import com.filmeo.webapp.model.entity.Genre;
+import com.filmeo.webapp.model.formEntity.GenreForm;
 import com.filmeo.webapp.model.service.GenreService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.*;
 
 @Controller
 public class GenresAdminController {
@@ -15,6 +19,81 @@ public class GenresAdminController {
     public String showGenreList(
             Model model
     ) {
+        model.addAttribute("genres", genreService.selectAll());
+
         return "admin/genre/genres";
+    }
+
+    @GetMapping("/admin/genres/new")
+    public String showForm(
+            Model model
+    ) {
+        model.addAttribute("genreForm", new GenreForm());
+
+        return "base";
+    }
+
+    @PostMapping("/admin/genres/new")
+    public String newGenre(
+            Model model,
+            @Valid GenreForm genreForm,
+            BindingResult bindingResult
+    ) {
+        if (bindingResult.hasErrors()) {
+
+        }
+
+        Genre genre = new Genre();
+        genre.setName(genreForm.getName());
+        genre.setDescription(genreForm.getDescription());
+
+        genreService.insert(genre);
+
+        return "redirect:/admin/genres";
+    }
+
+    @GetMapping("/admin/genres/update/{id}")
+    public String showForm(
+            Model model,
+            @PathVariable Integer id
+    ) {
+        Genre genre = genreService.selectById(id);
+        GenreForm genreForm = new GenreForm();
+        genreForm.setName(genre.getName());
+        genreForm.setDescription(genre.getDescription());
+
+        model.addAttribute("genres", genreForm);
+
+        return "base";
+    }
+
+    @PostMapping("/admin/genres/update/{id}")
+    public String updateGenre(
+            Model model,
+            @Valid GenreForm genreForm,
+            @PathVariable Integer id,
+            BindingResult bindingResult
+    ) {
+        if (bindingResult.hasErrors()) {
+            return "base";
+        }
+
+        Genre updateGenre = genreService.selectById(id);
+        updateGenre.setDescription(genreForm.getDescription());
+        updateGenre.setName(genreForm.getName());
+
+        genreService.update(updateGenre);
+
+        return "redirect:/admin/genres";
+    }
+
+    @PostMapping("/admin/genres/delete/{id}")
+    public String deleteGenre(
+            Model model,
+            @PathVariable Integer id
+    ) {
+        genreService.delete(id);
+
+        return "redirect:/admin/genres";
     }
 }

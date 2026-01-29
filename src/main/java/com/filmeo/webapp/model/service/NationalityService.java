@@ -2,11 +2,13 @@ package com.filmeo.webapp.model.service;
 
 import com.filmeo.webapp.error.BusinessException;
 import com.filmeo.webapp.error.ErrorType;
+import com.filmeo.webapp.model.entity.Human;
 import com.filmeo.webapp.model.entity.Nationality;
 import com.filmeo.webapp.model.repository.NationalityRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -25,6 +27,15 @@ public class NationalityService {
                         "Nationality"
                 )
         );
+    }
+
+    public List<Nationality> selectByIds(List<Integer> integers) {
+        List<Nationality> nationalities = new ArrayList<>();
+        integers.forEach(number -> {
+            nationalities.add(selectById(number));
+        });
+
+        return nationalities;
     }
 
     public Nationality insert(Nationality nationality) {
