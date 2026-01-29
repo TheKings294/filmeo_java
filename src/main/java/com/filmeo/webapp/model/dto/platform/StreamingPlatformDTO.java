@@ -9,6 +9,7 @@ import java.util.List;
 
 @Data
 public class StreamingPlatformDTO {
+    private Integer id;
     private String name;
     private String link;
     private String logoUrl;
@@ -16,6 +17,7 @@ public class StreamingPlatformDTO {
     private List<SeriLightDTO> series;
 
     public StreamingPlatformDTO(StreamingPlatform streamingPlatform) {
+        this.id = streamingPlatform.getId();
         this.name = streamingPlatform.getName();
         this.link = streamingPlatform.getLink();
         this.logoUrl = streamingPlatform.getLogoUrl();

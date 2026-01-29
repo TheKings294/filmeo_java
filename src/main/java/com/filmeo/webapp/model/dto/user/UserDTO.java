@@ -12,6 +12,7 @@ import java.util.List;
 
 @Data
 public class UserDTO {
+    private Integer id;
     private String pseudo;
     private String email;
     private List<String> roles;
@@ -20,6 +21,7 @@ public class UserDTO {
     private List<SeriLightDTO> wishListSeri;
 
     public UserDTO(User user) {
+        this.id = user.getId();
         this.pseudo = user.getPseudo();
         this.email = user.getEmail();
         this.roles = user.getRoles();

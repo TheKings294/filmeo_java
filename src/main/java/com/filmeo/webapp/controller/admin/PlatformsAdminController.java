@@ -31,7 +31,8 @@ public class PlatformsAdminController {
         Pageable pageable = PageRequest.of(pageNumber, 20);
         Page<StreamingPlatformDTO> page = streamingPlatformService.selectAll(pageable).map(StreamingPlatformDTO::new);
 
-        model.addAttribute("platforms", page);
+        model.addAttribute("platforms", page.getContent());
+        model.addAttribute("page", page);
 
         return "admin/platform/platforms";
     }

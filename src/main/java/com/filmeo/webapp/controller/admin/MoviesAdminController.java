@@ -62,7 +62,7 @@ public class MoviesAdminController {
 
         model.addAttribute("movieForm", new MovieForm());
         model.addAttribute("genres", genreService.selectAll().stream().map(GenreDTO::new).toList());
-        model.addAttribute("humans", humanService.selectAll().stream().map(HumanDTO::new).toList());
+        model.addAttribute("directors", humanService.selectAll().stream().map(HumanDTO::new).toList());
         model.addAttribute("castings", humanService.selectAll().stream().map(HumanDTO::new).toList());
         model.addAttribute("nationalities",
                 nationalityService.selectAll().stream().map(NationalityDTO::new).toList());
@@ -80,8 +80,9 @@ public class MoviesAdminController {
             Model model
     ) {
         if (bindingResult.hasErrors()) {
+            model.addAttribute("movieForm", movieForm);
             model.addAttribute("genres", genreService.selectAll().stream().map(GenreDTO::new).toList());
-            model.addAttribute("humans", humanService.selectAll().stream().map(HumanDTO::new).toList());
+            model.addAttribute("directors", humanService.selectAll().stream().map(HumanDTO::new).toList());
             model.addAttribute("castings", humanService.selectAll().stream().map(HumanDTO::new).toList());
             model.addAttribute("nationalities",
                     nationalityService.selectAll().stream().map(NationalityDTO::new).toList());
@@ -143,7 +144,7 @@ public class MoviesAdminController {
         model.addAttribute("movieId", id);
 
         model.addAttribute("genres", genreService.selectAll().stream().map(GenreDTO::new).toList());
-        model.addAttribute("humans", humanService.selectAll().stream().map(HumanDTO::new).toList());
+        model.addAttribute("directors", humanService.selectAll().stream().map(HumanDTO::new).toList());
         model.addAttribute("castings", humanService.selectAll().stream().map(HumanDTO::new).toList());
         model.addAttribute("nationalities",
                 nationalityService.selectAll().stream().map(NationalityDTO::new).toList());
@@ -167,7 +168,7 @@ public class MoviesAdminController {
             model.addAttribute("movieId", id);
 
             model.addAttribute("genres", genreService.selectAll().stream().map(GenreDTO::new).toList());
-            model.addAttribute("humans", humanService.selectAll().stream().map(HumanDTO::new).toList());
+            model.addAttribute("directors", humanService.selectAll().stream().map(HumanDTO::new).toList());
             model.addAttribute("castings", humanService.selectAll().stream().map(HumanDTO::new).toList());
             model.addAttribute("nationalities",
                     nationalityService.selectAll().stream().map(NationalityDTO::new).toList());

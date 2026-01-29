@@ -6,6 +6,7 @@ import com.filmeo.webapp.model.entity.Human;
 import com.filmeo.webapp.model.formEntity.HumanForm;
 import com.filmeo.webapp.model.service.HumanService;
 import com.filmeo.webapp.model.service.NationalityService;
+import com.filmeo.webapp.type.GenderEnum;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -47,6 +48,7 @@ public class HumansAdminController {
         model.addAttribute("humanForm", new HumanForm());
         model.addAttribute("nationalities",
                 nationalityService.selectAll().stream().map(NationalityDTO::new).toList());
+        model.addAttribute("genders", GenderEnum.values());
         model.addAttribute("editMode", false);
 
         return "admin/human/form";
