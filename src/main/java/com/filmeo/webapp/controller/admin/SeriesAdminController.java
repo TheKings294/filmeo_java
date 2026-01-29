@@ -11,12 +11,16 @@ import com.filmeo.webapp.model.formEntity.SeriForm;
 import com.filmeo.webapp.model.service.*;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
 public class SeriesAdminController {
@@ -39,8 +43,15 @@ public class SeriesAdminController {
     private PlatformSeriService platformSeriService;
 
     @GetMapping("/admin/series")
-    public String showSeriList(Model model) {
-        model.addAttribute("series", seriService.selectAll().stream().map(SeriDTO::new).toList());
+    public String showSeriList(
+            Model model,
+            @RequestParam(required = false) Integer pageNumber
+    ) {
+        if (pageNumber == null) pageNumber = 1;
+        Pageable pageable = PageRequest.of(pageNumber, 20);
+        Page<SeriDTO> page = seriService.selectAll(pageable).map(SeriDTO::new);
+
+        model.addAttribute("series", page);
         return "admin/seri/series";
     }
 

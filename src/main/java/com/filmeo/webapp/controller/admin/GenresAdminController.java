@@ -1,10 +1,14 @@
 package com.filmeo.webapp.controller.admin;
 
+import com.filmeo.webapp.model.dto.genre.GenreDTO;
 import com.filmeo.webapp.model.entity.Genre;
 import com.filmeo.webapp.model.formEntity.GenreForm;
 import com.filmeo.webapp.model.service.GenreService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -17,9 +21,14 @@ public class GenresAdminController {
 
     @GetMapping("/admin/genres")
     public String showGenreList(
-            Model model
+            Model model,
+            @RequestParam(required = false) Integer pageNumber
     ) {
-        model.addAttribute("genres", genreService.selectAll());
+        if (pageNumber == null) pageNumber = 1;
+        Pageable pageable = PageRequest.of(pageNumber, 20);
+        Page<GenreDTO> page = genreService.selectAll(pageable)
+                .map(GenreDTO::new);
+        model.addAttribute("genres", page);
 
         return "admin/genre/genres";
     }
