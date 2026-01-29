@@ -52,12 +52,13 @@ public class SeriesAdminController {
             Model model,
             @RequestParam(required = false) Integer pageNumber
     ) {
-        if (pageNumber == null) pageNumber = 1;
+        if (pageNumber == null) pageNumber = 0;
         Pageable pageable = PageRequest.of(pageNumber, 20);
         Page<SeriDTO> page = seriService.selectAll(pageable).map(SeriDTO::new);
 
         model.addAttribute("series", page);
         model.addAttribute("count", countService.getTotalCount());
+        model.addAttribute("page", page);
 
         return "admin/seri/series";
     }

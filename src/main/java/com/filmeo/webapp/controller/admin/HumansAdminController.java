@@ -37,12 +37,13 @@ public class HumansAdminController {
             Model model,
             @RequestParam(required = false) Integer pageNumber
     ) {
-        if (pageNumber == null) pageNumber = 1;
+        if (pageNumber == null) pageNumber = 0;
         Pageable pageable = PageRequest.of(pageNumber, 20);
         Page<HumanDTO> page = humanService.selectAll(pageable).map(HumanDTO::new);
 
         model.addAttribute("humans", page);
         model.addAttribute("count", countService.getTotalCount());
+        model.addAttribute("page", page);
 
         return "admin/human/humans";
     }

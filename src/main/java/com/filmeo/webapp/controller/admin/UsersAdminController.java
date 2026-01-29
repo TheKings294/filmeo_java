@@ -41,6 +41,7 @@ public class UsersAdminController {
 
         model.addAttribute("users", page);
         model.addAttribute("count", countService.getTotalCount());
+        model.addAttribute("page", page);
 
         return "admin/user/users";
     }

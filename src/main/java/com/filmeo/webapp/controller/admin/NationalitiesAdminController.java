@@ -31,12 +31,13 @@ public class NationalitiesAdminController {
             Model model,
             @RequestParam(required = false) Integer pageNumber
     ) {
-        if (pageNumber == null) pageNumber = 1;
+        if (pageNumber == null) pageNumber = 0;
         Pageable pageable = PageRequest.of(pageNumber, 20);
         Page<NationalityDTO> page = nationalityService.selectAll(pageable).map(NationalityDTO::new);
 
         model.addAttribute("nationalities", page);
         model.addAttribute("count", countService.getTotalCount());
+        model.addAttribute("page", page);
 
         return "admin/nationality/nationalities";
     }

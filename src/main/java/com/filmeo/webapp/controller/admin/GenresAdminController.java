@@ -28,12 +28,13 @@ public class GenresAdminController {
             Model model,
             @RequestParam(required = false) Integer pageNumber
     ) {
-        if (pageNumber == null) pageNumber = 1;
+        if (pageNumber == null) pageNumber = 0;
         Pageable pageable = PageRequest.of(pageNumber, 20);
         Page<GenreDTO> page = genreService.selectAll(pageable)
                 .map(GenreDTO::new);
         model.addAttribute("genres", page);
         model.addAttribute("count", countService.getTotalCount());
+        model.addAttribute("page", page);
 
         return "admin/genre/genres";
     }

@@ -31,7 +31,7 @@ public class PlatformsAdminController {
             Model model,
             @RequestParam(required = false) Integer pageNumber
     ) {
-        if (pageNumber == null) pageNumber = 1;
+        if (pageNumber == null) pageNumber = 0;
         Pageable pageable = PageRequest.of(pageNumber, 20);
         Page<StreamingPlatformDTO> page = streamingPlatformService.selectAll(pageable).map(StreamingPlatformDTO::new);
 

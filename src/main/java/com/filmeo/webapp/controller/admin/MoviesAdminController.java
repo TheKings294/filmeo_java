@@ -51,12 +51,13 @@ public class MoviesAdminController {
             Model model,
             @RequestParam(required = false) Integer pageNumber
     ) {
-        if (pageNumber == null) pageNumber = 1;
+        if (pageNumber == null) pageNumber = 0;
         Pageable pageable = PageRequest.of(pageNumber, 20);
         Page<MovieDTO> page = movieService.selectAll(pageable).map(MovieDTO::new);
 
         model.addAttribute("movies", page);
         model.addAttribute("count", countService.getTotalCount());
+        model.addAttribute("page", page);
 
         return "admin/movie/movies";
     }
