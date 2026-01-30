@@ -1,8 +1,6 @@
 package com.filmeo.webapp.controller;
 
-import com.filmeo.webapp.model.entity.ConnectedUser;
-import com.filmeo.webapp.model.entity.Review;
-import com.filmeo.webapp.model.entity.User;
+import com.filmeo.webapp.model.entity.*;
 import com.filmeo.webapp.model.formEntity.ReviewForm;
 import com.filmeo.webapp.model.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -42,10 +40,14 @@ public class ReviewController {
 
         switch (reviewForm.getType()) {
             case "movie":
-                review.setMovie(movieService.selectById(id));
+                Movie movie = movieService.selectById(id);
+                review.setMovie(movie);
+                user.getWishListMovie().remove(movie);
                 break;
             case "serie":
-                review.setSeri(seriService.selectById(id));
+                Seri seri = seriService.selectById(id);
+                review.setSeri(seri);
+                user.getWishListSeri().remove(seri);
                 break;
             case "actor":
                 review.setActor(humanService.selectById(id));
