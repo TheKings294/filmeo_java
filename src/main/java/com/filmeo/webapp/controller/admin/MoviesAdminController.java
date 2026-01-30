@@ -23,6 +23,9 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Controller
 public class MoviesAdminController {
     @Autowired
@@ -146,6 +149,17 @@ public class MoviesAdminController {
         movieForm.setNationalitiesId(
                 movie.getNationalities().stream().map(Nationality::getId).toList()
         );
+
+        List<PlatformMovieForm> pmfList = new ArrayList<>();
+
+        for (PlatformMovie pm : movie.getPlatformMovies()) {
+            PlatformMovieForm pmf = new PlatformMovieForm();
+            pmf.setEndDate(pm.getEndDate());
+            pmf.setPlatformId(pm.getPlatform().getId());
+            pmfList.add(pmf);
+        }
+
+        movieForm.setPlatformMoviesId(pmfList);
 
         model.addAttribute("movieForm", movieForm);
         model.addAttribute("movieId", id);

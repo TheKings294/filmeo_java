@@ -24,6 +24,9 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Controller
 public class SeriesAdminController {
     @Autowired
@@ -147,6 +150,18 @@ public class SeriesAdminController {
         seriForm.setNationalitiesId(
                 seri.getNationalities().stream().map(Nationality::getId).toList()
         );
+
+        List<PlatformSeriForm> psfList = new ArrayList<>();
+
+        for (PlatformSeri ps : seri.getPlatformSeris()) {
+            PlatformSeriForm psf = new PlatformSeriForm();
+            psf.setEndDate(ps.getEndDate());
+            psf.setPlatformId(ps.getPlatform().getId());
+
+            psfList.add(psf);
+        }
+
+        seriForm.setPlatformSerisId(psfList);
 
         model.addAttribute("seriForm", seriForm);
         model.addAttribute("seriId", id);
