@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="fr" xmlns:th="http://www.thymeleaf.org" th:replace="~{base :: layout(~{::section})}">
+<head>
+    <title>CineStream | Actors</title>
+</head>
+<body>
+<section class="bg-black text-white">
+    <div th:replace="~{fragments/navbar :: body}"></div>
+
+    <main>
+        <div class="min-h-screen bg-black">
+            <div class="max-w-7xl mx-auto px-4 md:px-8 py-8 md:py-12">
+
+                <!-- Header -->
+                <div class="flex items-center gap-3 mb-8">
+                    <svg class="w-8 h-8 text-red-600"
+                         fill="none" stroke="currentColor" stroke-width="2"
+                         viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round"
+                              d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-5-7 5V5z"/>
+                    </svg>
+
+                    <h1 class="text-3xl md:text-4xl font-bold">My Watchlist</h1>
+                </div>
+
+                <!-- Watchlist not empty -->
+                <div th:if="${!medias.isEmpty()}">
+
+                    <p class="text-neutral-400 mb-8">
+                        <span th:text="${medias.size()}"></span>
+                        <span th:text="${medias.size() == 1 ? 'item' : 'items'}"></span>
+                        in your watchlist
+                    </p>
+
+                    <div
+                            class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5
+               gap-4 md:gap-6"
+                    >
+                        <div th:each="content : ${medias}">
+                            <a th:href="@{${content.type == 'MOVIE' ? '/movies/{id}' : '/series/{id}'} (id=${content.id})}">
+                                <div th:replace="fragments/media-card :: mediaCard(
+                            ${content.title},
+                            ${content.poster},
+                            ${content.type},
+                            ${content.type == 'MOVIE' ? avgByMovieId[content.id] : avgBySeriId[content.id]}
+                            )"></div>
+                            </a>
+                        </div>
+                    </div>
+
+                </div>
+
+                <!-- Empty watchlist -->
+                <div th:if="${medias.isEmpty()}" class="text-center py-20">
+                    <svg class="w-20 h-20 text-neutral-700 mx-auto mb-4"
+                         fill="none" stroke="currentColor" stroke-width="2"
+                         viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round"
+                              d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-5-7 5V5z"/>
+                    </svg>
+
+                    <h2 class="text-2xl font-bold mb-2">Your watchlist is empty</h2>
+                    <p class="text-neutral-400">
+                        Start adding movies and series to keep track of what you want to watch!
+                    </p>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <div th:replace="~{fragments/footer :: body}"></div>
+
+</section>
+</body>
+</html>

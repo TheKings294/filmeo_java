@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      th:fragment="layout(content)">
+<head>
+    <meta charset="UTF-8">
+    <link th:rel="@{/css/index.css}">
+    <title>CineStream | Admin Dashboard</title>
+
+    <!-- Tailwind -->
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+</head>
+
+<body class="min-h-screen bg-black text-white">
+
+<!-- ================= HEADER ================= -->
+<header class="border-b border-neutral-800 bg-neutral-950">
+    <div class="max-w-7xl mx-auto px-4 md:px-8 py-6">
+        <div class="flex items-center justify-between">
+
+            <div class="flex items-center gap-3">
+                <!-- Shield icon -->
+                <svg class="w-8 h-8 text-red-600" fill="none" stroke="currentColor" stroke-width="2"
+                     viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round"
+                          d="M12 2l7 4v6c0 5-3.5 9-7 10-3.5-1-7-5-7-10V6l7-4z"/>
+                </svg>
+
+                <div>
+                    <h1 class="text-2xl font-bold">Admin Dashboard</h1>
+                    <p class="text-neutral-400 text-sm">Manage your platform</p>
+                </div>
+            </div>
+
+            <a th:href="@{/}" class="px-4 py-2 bg-neutral-900 hover:bg-neutral-800
+                                   rounded-lg border border-neutral-800 transition">
+                Back to Site
+            </a>
+
+        </div>
+    </div>
+</header>
+
+<main class="max-w-7xl mx-auto px-4 md:px-8 py-8">
+    <div class="grid grid-cols-1 lg:grid-cols-4 gap-6">
+
+        <aside class="lg:col-span-1">
+            <nav class="space-y-1">
+
+                <a th:href="@{/admin/movies}"
+                   class="w-full flex items-center justify-between gap-3 px-4 py-3 rounded-lg"
+                    th:classappend="${#strings.contains(currentPath, '/admin/movies')  ? 'bg-red-600 text-white' :
+                    'text-neutral-400 hover:text-white hover:bg-neutral-900'}"
+                >
+
+                    <div class="flex items-center gap-3">
+                        <!-- Icon -->
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2"
+                             viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round"
+                                  d="M7 4v16M17 4v16M3 8h18M3 16h18"/>
+                        </svg>
+
+                        <span class="font-semibold">Movies</span>
+                    </div>
+
+                    <span class="text-sm px-2 py-0.5 rounded bg-white/20" th:text="${count.movies}">
+                        12
+                    </span>
+                </a>
+                <a th:href="@{/admin/series}"
+                   class="w-full flex items-center justify-between gap-3 px-4 py-3 rounded-lg"
+                   th:classappend="${#strings.contains(currentPath, '/admin/series') ? 'bg-red-600 text-white' :
+                    'text-neutral-400 hover:text-white hover:bg-neutral-900'}"
+                >
+
+                    <div class="flex items-center gap-3">
+                        <!-- Icon -->
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2"
+                             viewBox="0 0 24 24">
+                            <rect x="2" y="7" width="20" height="15" rx="2"/>
+                            <path stroke-linecap="round" stroke-linejoin="round"
+                                  d="M17 2l-5 5-5-5"/>
+                        </svg>
+
+
+                        <span class="font-semibold">Series</span>
+                    </div>
+
+                    <span class="text-sm px-2 py-0.5 rounded bg-white/20" th:text="${count.series}">
+                        12
+                    </span>
+                </a>
+                <a th:href="@{/admin/humans}"
+                   class="w-full flex items-center justify-between gap-3 px-4 py-3 rounded-lg"
+                   th:classappend="${#strings.contains(currentPath, '/admin/humans') ? 'bg-red-600 text-white' :
+                    'text-neutral-400 hover:text-white hover:bg-neutral-900'}"
+                >
+
+                    <div class="flex items-center gap-3">
+                        <!-- Icon -->
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2"
+                             viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round"
+                                  d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/>
+                            <circle cx="12" cy="7" r="4"/>
+                        </svg>
+
+                        <span class="font-semibold">Humans</span>
+                    </div>
+
+                    <span class="text-sm px-2 py-0.5 rounded bg-white/20" th:text="${count.humans}">
+                        12
+                    </span>
+                </a>
+                <a th:href="@{/admin/genres}"
+                   class="w-full flex items-center justify-between gap-3 px-4 py-3 rounded-lg"
+                   th:classappend="${#strings.contains(currentPath, '/admin/genres') ? 'bg-red-600 text-white' :
+                    'text-neutral-400 hover:text-white hover:bg-neutral-900'}"
+                >
+
+                    <div class="flex items-center gap-3">
+                        <!-- Icon -->
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2"
+                             viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round"
+                                  d="M20 12l-8 8-8-8V4h8z"/>
+                            <circle cx="7.5" cy="7.5" r="1.5"/>
+                        </svg>
+
+                        <span class="font-semibold">Genres</span>
+                    </div>
+
+                    <span class="text-sm px-2 py-0.5 rounded bg-white/20" th:text="${count.genres}">
+                        12
+                    </span>
+                </a>
+                <a th:href="@{/admin/nationalities}"
+                   class="w-full flex items-center justify-between gap-3 px-4 py-3 rounded-lg"
+                   th:classappend="${#strings.contains(currentPath, '/admin/nationalities') ? 'bg-red-600 text-white' :
+                    'text-neutral-400 hover:text-white hover:bg-neutral-900'}"
+                >
+
+                    <div class="flex items-center gap-3">
+                        <!-- Icon -->
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2"
+                             viewBox="0 0 24 24">
+                            <circle cx="12" cy="12" r="10"/>
+                            <path stroke-linecap="round" stroke-linejoin="round"
+                                  d="M2 12h20M12 2a15 15 0 010 20M12 2a15 15 0 000 20"/>
+                        </svg>
+
+                        <span class="font-semibold">Nationalities</span>
+                    </div>
+
+                    <span class="text-sm px-2 py-0.5 rounded bg-white/20" th:text="${count.nationalities}">
+                        12
+                    </span>
+                </a>
+                <a th:href="@{/admin/platforms}"
+                   class="w-full flex items-center justify-between gap-3 px-4 py-3 rounded-lg"
+                   th:classappend="${#strings.contains(currentPath, '/admin/platforms') ? 'bg-red-600 text-white' :
+                    'text-neutral-400 hover:text-white hover:bg-neutral-900'}"
+                >
+
+                    <div class="flex items-center gap-3">
+                        <!-- Icon -->
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2"
+                             viewBox="0 0 24 24">
+                            <rect x="2" y="3" width="20" height="14" rx="2"/>
+                            <path stroke-linecap="round" stroke-linejoin="round"
+                                  d="M8 21h8M12 17v4"/>
+                        </svg>
+
+                        <span class="font-semibold">Platforms</span>
+                    </div>
+
+                    <span class="text-sm px-2 py-0.5 rounded bg-white/20" th:text="${count.platforms}">
+                        12
+                    </span>
+                </a>
+                <a th:href="@{/admin/users}"
+                   class="w-full flex items-center justify-between gap-3 px-4 py-3 rounded-lg"
+                   th:classappend="${#strings.contains(currentPath, '/admin/users') ? 'bg-red-600 text-white' :
+                    'text-neutral-400 hover:text-white hover:bg-neutral-900'}"
+                >
+
+                    <div class="flex items-center gap-3">
+                        <!-- Icon -->
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2"
+                             viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round"
+                                  d="M17 21v-2a4 4 0 00-3-3.87"/>
+                            <path stroke-linecap="round" stroke-linejoin="round"
+                                  d="M7 21v-2a4 4 0 014-4h0"/>
+                            <circle cx="9" cy="7" r="4"/>
+                            <circle cx="17" cy="7" r="3"/>
+                        </svg>
+
+                        <span class="font-semibold">Users</span>
+                    </div>
+
+                    <span class="text-sm px-2 py-0.5 rounded bg-white/20" th:text="${count.users}">
+                        12
+                    </span>
+                </a>
+
+            </nav>
+        </aside>
+
+        <!-- ========== CONTENT SLOT ========== -->
+        <section class="lg:col-span-3">
+            <div th:replace="${content}">
+                <!-- injected page content -->
+            </div>
+        </section>
+
+    </div>
+</main>
+
+</body>
+</html>
