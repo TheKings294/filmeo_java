@@ -73,6 +73,7 @@
                 Admin
             </a>
             <a sec:authorize="isAuthenticated()"
+               th:href="@{/me}"
                 class="bg-neutral-900 border border-neutral-700 rounded-xl transition text-white px-6 py-2.5 rounded-xl text-sm mr-4">
                 <span sec:authentication="name"></span>
             </a>
