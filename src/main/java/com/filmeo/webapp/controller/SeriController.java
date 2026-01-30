@@ -12,11 +12,15 @@ import com.filmeo.webapp.model.service.SeriService;
 import com.filmeo.webapp.model.service.UserService;
 import jakarta.persistence.EntityManager;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -39,8 +43,11 @@ public class SeriController {
 
     @GetMapping("/series")
     public String showSeries(
-            Model model
+            Model model,
+            @RequestParam(required = false) Integer pageNumber
     ) {
+        if (pageNumber == null) pageNumber = 0;
+        Pageable pageable = PageRequest.of(pageNumber, 20);
         List<Object[]> results = entityManager.createQuery(
                 """
                 SELECT r.seri.id, avg(r.rate)
@@ -56,8 +63,10 @@ public class SeriController {
                                 r -> (Double) r[1]
                         )
                 );
+        Page<SeriDTO> page = seriService.selectAll(pageable).map(SeriDTO::new);
 
-        model.addAttribute("series", seriService.selectAll().stream().map(SeriDTO::new).toList());
+        model.addAttribute("series", page.getContent());
+        model.addAttribute("page", page);
         model.addAttribute("avgBySeriId", avgBySeriId);
         model.addAttribute("content", "public/seri/series");
 
