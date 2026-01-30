@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css"
+          integrity="sha512-2SwdPD6INVrV/lHTZbO2nodKhrnDdJK9/kg2XD1r9uGqPo1cUbujc+IYdlYdEErWNu69gVcYgdxlmVmzTWnetw=="
+          crossorigin="anonymous"
+          referrerpolicy="no-referrer" />
+    <link rel="stylesheet" th:href="@{/css/index.css}">
+    <title>Movie form</title>
+</head>
+
+<body class="min-h-screen bg-black">
+
+<!-- Header -->
+<div class="border-b border-neutral-800 bg-neutral-950">
+    <div class="max-w-4xl mx-auto px-4 md:px-8 py-6">
+        <div class="flex items-center gap-4">
+            <a th:href="@{/movies}" class="p-2 hover:bg-neutral-800 rounded-lg">
+                ←
+            </a>
+
+            <div>
+                <h1 class="text-2xl font-bold text-white"
+                    th:text="${!editMode} ? 'Create New Movie' : 'Edit Movie'">
+                </h1>
+                <p class="text-neutral-400 text-sm">
+                    Add or update movie information
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Form -->
+<div class="max-w-4xl mx-auto px-4 md:px-8 py-8">
+    <form th:action="${editMode ? '/admin/movies/update/' + movieId : '/admin/movies/new'}"
+          th:object="${movieForm}"
+          method="post"
+          class="space-y-8">
+
+        <!--The error list-->
+        <div th:if="${#fields.hasErrors()}"
+             class="bg-red-900/40 border border-red-600 text-red-300 rounded-lg p-4">
+            <p class="font-semibold mb-2">Please fix the following errors:</p>
+            <ul class="list-disc list-inside text-sm">
+                <li th:each="err : ${#fields.errors('*')}"
+                    th:text="${err}">
+                </li>
+            </ul>
+        </div>
+
+
+        <!-- BASIC INFO -->
+        <div class="bg-neutral-950 rounded-lg border border-neutral-800 p-6">
+            <h2 class="text-xl font-semibold text-white mb-6">Basic Information</h2>
+
+            <div class="space-y-4">
+                <div>
+                    <label class="block text-sm font-medium text-neutral-300 mb-2">Title *</label>
+                    <input type="text"
+                           th:field="*{title}"
+                           class="w-full bg-neutral-900 text-white px-4 py-3 rounded-lg border border-neutral-800 focus:border-red-600"
+                           required>
+
+                    <p th:if="${#fields.hasErrors('title')}"
+                       th:errors="*{title}"
+                       class="text-red-500 text-sm mt-1">
+                    </p>
+                </div>
+
+                <div>
+                    <label class="block text-sm font-medium text-neutral-300 mb-2">Synopsis</label>
+                    <textarea rows="4"
+                              th:field="*{resume}"
+                              class="w-full bg-neutral-900 text-white px-4 py-3 rounded-lg border border-neutral-800 resize-none"></textarea>
+                </div>
+
+                <div>
+                    <label class="block text-sm font-medium text-neutral-300 mb-2">Poster URL *</label>
+                    <input type="url"
+                           th:field="*{posterURL}"
+                           class="w-full bg-neutral-900 text-white px-4 py-3 rounded-lg border border-neutral-800"
+                           required>
+
+                    <p th:if="${#fields.hasErrors('posterURL')}"
+                       th:errors="*{posterURL}"
+                       class="text-red-500 text-sm mt-1">
+                    </p>
+                </div>
+
+                <div>
+                    <label class="block text-sm text-neutral-300 mb-2">Realisator *</label>
+                    <select th:field="*{realId}"
+                            class="w-full bg-neutral-900 text-white px-4 py-3 rounded-lg border border-neutral-800"
+                            th:classappend="${#fields.hasErrors('realId')} ? 'border-red-600' : ''">
+                        <option value="">-- Select real --</option>
+                        <option th:each="d : ${directors}"
+                                th:value="${d.id}"
+                                th:text="${d.firstName + d.lastName}"></option>
+                    </select>
+                    <p th:errors="*{realId}" class="text-red-500 text-sm mt-1"></p>
+                </div>
+            </div>
+        </div>
+
+        <!-- GENRES -->
+        <div class="bg-neutral-950 rounded-lg border border-neutral-800 p-6">
+            <h2 class="text-xl font-semibold text-white mb-6">Genres</h2>
+
+            <div class="flex flex-wrap gap-3">
+                <label th:each="g : ${genres}"
+                       class="cursor-pointer m-1">
+                    <input type="checkbox"
+                           th:value="${g.id}"
+                           th:field="*{genresId}"
+                           class="hidden peer">
+                    <span
+                            class="px-4 py-2 rounded-lg bg-neutral-800 text-neutral-300 peer-checked:bg-red-600 peer-checked:text-white">
+                    <span th:text="${g.name}"></span>
+                </span>
+                </label>
+
+                <p th:if="${#fields.hasErrors('genresId')}"
+                   th:errors="*{genresId}"
+                   class="text-red-500 text-sm mt-2">
+                </p>
+            </div>
+        </div>
+
+        <div class="bg-neutral-950 rounded-lg border border-neutral-800 p-6">
+            <h2 class="text-xl font-semibold text-white mb-6">Actors</h2>
+
+            <div class="flex flex-wrap gap-3">
+                <label th:each="c : ${castings}"
+                       class="cursor-pointer m-1">
+                    <input type="checkbox"
+                           th:value="${c.id}"
+                           th:field="*{genresId}"
+                           class="hidden peer">
+                    <span
+                            class="px-4 py-2 rounded-lg bg-neutral-800 text-neutral-300 peer-checked:bg-red-600 peer-checked:text-white">
+                    <span th:text="${c.lastName + c.firstName}"></span>
+                </span>
+                </label>
+
+                <p th:if="${#fields.hasErrors('castingId')}"
+                   th:errors="*{castingId}"
+                   class="text-red-500 text-sm mt-2">
+                </p>
+            </div>
+        </div>
+
+        <div class="bg-neutral-950 rounded-lg border border-neutral-800 p-6">
+            <h2 class="text-xl font-semibold text-white mb-6">Nationalities</h2>
+
+            <div class="flex flex-wrap gap-3">
+                <label th:each="n : ${nationalities}"
+                       class="cursor-pointer m-1">
+                    <input type="checkbox"
+                           th:value="${n.id}"
+                           th:field="*{nationalitiesId}"
+                           class="hidden peer">
+                    <span
+                            class="px-4 py-2 rounded-lg bg-neutral-800 text-neutral-300 peer-checked:bg-red-600 peer-checked:text-white">
+                    <span th:text="${n.name}"></span>
+                </span>
+                </label>
+
+                <p th:if="${#fields.hasErrors('nationalitiesId')}"
+                   th:errors="*{nationalitiesId}"
+                   class="text-red-500 text-sm mt-2">
+                </p>
+            </div>
+        </div>
+
+        <!-- STREAMING PLATFORMS -->
+        <div class="bg-neutral-950 rounded-lg border border-neutral-800 p-6">
+            <section class="flex flex-row justify-between mb-2">
+                <h2 class="text-xl font-semibold text-white mb-6">Streaming Platforms</h2>
+                <button type="button"
+                        onclick="openPlatformModal()"
+                        class="px-4 py-2 bg-red-600 hover:bg-red-700 text-white rounded-lg transition">
+                    Add Platform
+                </button>
+            </section>
+
+            <section id="platformMovieContainer">
+                <div class="space-y-4 mb-4"
+                     th:each="pm, stat : *{platformMoviesId}">
+
+                    <div class="platform-movie-row p-4 bg-neutral-900 rounded-lg border border-neutral-800 space-y-3">
+
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+                            <div>
+                                <label class="block text-sm text-neutral-300 mb-2">Platform</label>
+                                <select th:field="*{platformMoviesId[__${stat.index}__].platformId}"
+                                        class="w-full bg-neutral-800 text-white px-3 py-2 rounded-lg border border-neutral-700">
+                                    <option th:each="p : ${platforms}"
+                                            th:value="${p.id}"
+                                            th:text="${p.name}">
+                                    </option>
+                                </select>
+
+                                <p th:if="${#fields.hasErrors('platformMoviesId[' + stat.index + '].platformId')}"
+                                   th:errors="*{platformMoviesId[__${stat.index}__].platformId}"
+                                   class="text-red-500 text-sm">
+                                </p>
+                            </div>
+
+                            <div>
+                                <label class="block text-sm text-neutral-300 mb-2">End Date</label>
+                                <input type="date"
+                                       th:field="*{platformMoviesId[__${stat.index}__].endDate}"
+                                       class="w-full bg-neutral-800 text-white px-3 py-2 rounded-lg border border-neutral-700">
+
+                                <p th:if="${#fields.hasErrors('platformMoviesId[' + stat.index + '].endDate')}"
+                                   th:errors="*{platformMoviesId[__${stat.index}__].endDate}"
+                                   class="text-red-500 text-sm">
+                                </p>
+                            </div>
+                        </div>
+
+                        <button type="button"
+                                onclick="removePlatform(this)"
+                                class="mt-3 text-sm text-red-500 hover:text-red-400">
+                            Remove platform
+                        </button>
+                    </div>
+                </div>
+            </section>
+        </div>
+
+        <!-- ACTIONS -->
+        <div class="flex gap-4">
+            <button type="submit"
+                    class="flex-1 bg-red-600 hover:bg-red-700 text-white px-6 py-3 rounded-lg font-semibold">
+                Save Movie
+            </button>
+
+            <a th:href="@{/admin/movies}"
+               class="px-6 py-3 bg-neutral-800 hover:bg-neutral-700 text-white rounded-lg">
+                Cancel
+            </a>
+        </div>
+
+    </form>
+</div>
+
+<div id="platformModal"
+     class="fixed inset-0 bg-black/70 flex items-center justify-center hidden z-50">
+
+    <div class="bg-neutral-950 border border-neutral-800 rounded-lg w-full max-w-md p-6">
+
+        <h3 class="text-lg font-semibold text-white mb-4">
+            Add Streaming Platform
+        </h3>
+
+        <!-- Platform select -->
+        <div class="mb-4">
+            <label class="block text-sm text-neutral-300 mb-2">Platform</label>
+            <select id="platformSelect"
+                    name="platformId"
+                    class="w-full bg-neutral-900 text-white px-3 py-2 rounded-lg border border-neutral-800">
+                <option value="">Select a platform</option>
+                <option th:each="p : ${platforms}"
+                        th:value="${p.id}"
+                        th:text="${p.name}">
+                </option>
+            </select>
+        </div>
+
+        <!-- End date -->
+        <div class="mb-6">
+            <label class="block text-sm text-neutral-300 mb-2">
+                End date (optional)
+            </label>
+            <input type="date"
+                   name="endDate"
+                   id="platformEndDate"
+                   class="w-full bg-neutral-900 text-white px-3 py-2 rounded-lg border border-neutral-800">
+        </div>
+
+        <!-- Actions -->
+        <div class="flex justify-end gap-3">
+            <button type="button"
+                    onclick="closePlatformModal()"
+                    class="px-4 py-2 bg-neutral-800 text-white rounded-lg">
+                Cancel
+            </button>
+            <button type="button"
+                    onclick="addPlatformMovie()"
+                    class="px-4 py-2 bg-red-600 hover:bg-red-700 text-white rounded-lg">
+                Add
+            </button>
+        </div>
+
+    </div>
+</div>
+
+<script th:src="@{/js/movie.js}">
+</script>
+
+</body>
+</html>

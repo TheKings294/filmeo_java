@@ -1,0 +1,159 @@
+package com.filmeo.webapp.controller.admin;
+
+import com.filmeo.webapp.model.dto.human.HumanDTO;
+import com.filmeo.webapp.model.dto.nationality.NationalityDTO;
+import com.filmeo.webapp.model.entity.Human;
+import com.filmeo.webapp.model.formEntity.HumanForm;
+import com.filmeo.webapp.model.service.HumanService;
+import com.filmeo.webapp.model.service.NationalityService;
+import com.filmeo.webapp.service.CountService;
+import com.filmeo.webapp.type.GenderEnum;
+import jakarta.validation.Valid;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+
+@Controller
+public class HumansAdminController {
+    @Autowired
+    private HumanService humanService;
+
+    @Autowired
+    private NationalityService nationalityService;
+
+    @Autowired
+    private CountService countService;
+
+    @GetMapping("/admin/humans")
+    public String showHumanList(
+            Model model,
+            @RequestParam(required = false) Integer pageNumber
+    ) {
+        if (pageNumber == null) pageNumber = 0;
+        Pageable pageable = PageRequest.of(pageNumber, 20);
+        Page<HumanDTO> page = humanService.selectAll(pageable).map(HumanDTO::new);
+
+        model.addAttribute("humans", page);
+        model.addAttribute("count", countService.getTotalCount());
+        model.addAttribute("page", page);
+
+        return "admin/human/humans";
+    }
+
+    @GetMapping("/admin/humans/new")
+    public String showForm(
+            Model model
+    ) {
+        model.addAttribute("humanForm", new HumanForm());
+        model.addAttribute("nationalities",
+                nationalityService.selectAll().stream().map(NationalityDTO::new).toList());
+        model.addAttribute("genders", GenderEnum.values());
+        model.addAttribute("editMode", false);
+
+        return "admin/human/form";
+    }
+
+    @PostMapping("/admin/humans/new")
+    public String newGenre(
+            Model model,
+            @Valid HumanForm humanForm,
+            BindingResult bindingResult
+    ) {
+        if (bindingResult.hasErrors()) {
+            model.addAttribute("humanForm", new HumanForm());
+            model.addAttribute("nationalities",
+                    nationalityService.selectAll().stream().map(NationalityDTO::new).toList());
+            model.addAttribute("genders", GenderEnum.values());
+            model.addAttribute("editMode", false);
+
+            return "admin/human/form";
+        }
+
+        Human human = new Human();
+        human.setProfilePicture(humanForm.getProfilePicture());
+        human.setNationality(nationalityService.selectById(humanForm.getNationalityId()));
+        human.setGender(humanForm.getGender());
+        human.setDeathDate(humanForm.getDeathDate());
+        human.setBirthDate(humanForm.getBirthDate());
+        human.setLastName(humanForm.getLastName());
+
+        humanService.insert(human);
+
+        return "redirect:/admin/humans";
+    }
+
+    @GetMapping("/admin/humans/update/{id}")
+    public String showForm(
+            Model model,
+            @PathVariable Integer id
+    ) {
+        Human human = humanService.selectById(id);
+        HumanForm humanForm = new HumanForm();
+        humanForm.setProfilePicture(human.getProfilePicture());
+        humanForm.setNationalityId(human.getNationality().getId());
+        humanForm.setGender(human.getGender());
+        humanForm.setDeathDate(human.getDeathDate());
+        humanForm.setBirthDate(human.getBirthDate());
+        humanForm.setLastName(human.getLastName());
+        humanForm.setFirstName(human.getFirstName());
+
+        model.addAttribute("humanForm", humanForm);
+        model.addAttribute("humanId", id);
+        model.addAttribute("nationalities",
+                nationalityService.selectAll().stream().map(NationalityDTO::new).toList());
+        model.addAttribute("genders", GenderEnum.values());
+        model.addAttribute("editMode", true);
+
+        return "admin/human/form";
+    }
+
+    @PostMapping("/admin/humans/update/{id}")
+    public String updateGenre(
+            Model model,
+            @Valid HumanForm humanForm,
+            @PathVariable Integer id,
+            BindingResult bindingResult
+    ) {
+        if (bindingResult.hasErrors()) {
+            model.addAttribute("humanForm", humanForm);
+            model.addAttribute("humanId", id);
+            model.addAttribute("nationalities",
+                    nationalityService.selectAll().stream().map(NationalityDTO::new).toList());
+            model.addAttribute("genders", GenderEnum.values());
+            model.addAttribute("editMode", true);
+
+            return "admin/human/form";
+        }
+
+        Human updateHuman = humanService.selectById(id);
+        updateHuman.setLastName(humanForm.getLastName());
+        updateHuman.setGender(humanForm.getGender());
+        updateHuman.setBirthDate(humanForm.getBirthDate());
+        updateHuman.setProfilePicture(humanForm.getProfilePicture());
+        updateHuman.setNationality(nationalityService.selectById(humanForm.getNationalityId()));
+        updateHuman.setDeathDate(humanForm.getDeathDate());
+        updateHuman.setFirstName(humanForm.getFirstName());
+
+        humanService.update(updateHuman);
+
+        return "redirect:/admin/humans";
+    }
+
+    @PostMapping("/admin/humans/delete/{id}")
+    public String deleteGenre(
+            Model model,
+            @PathVariable Integer id
+    ) {
+        humanService.delete(id);
+
+        return "redirect:/admin/humans";
+    }
+}

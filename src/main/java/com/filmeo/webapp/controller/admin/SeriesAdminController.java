@@ -1,0 +1,227 @@
+package com.filmeo.webapp.controller.admin;
+
+import com.filmeo.webapp.model.dto.genre.GenreDTO;
+import com.filmeo.webapp.model.dto.human.HumanDTO;
+import com.filmeo.webapp.model.dto.nationality.NationalityDTO;
+import com.filmeo.webapp.model.dto.platform.StreamingPlatformDTO;
+import com.filmeo.webapp.model.dto.seri.SeriDTO;
+import com.filmeo.webapp.model.entity.*;
+import com.filmeo.webapp.model.formEntity.PlatformSeriForm;
+import com.filmeo.webapp.model.formEntity.SeriForm;
+import com.filmeo.webapp.model.service.*;
+import com.filmeo.webapp.service.CountService;
+import com.filmeo.webapp.type.SeriStatusEnum;
+import jakarta.validation.Valid;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+
+import java.util.ArrayList;
+import java.util.List;
+
+@Controller
+public class SeriesAdminController {
+    @Autowired
+    private SeriService seriService;
+
+    @Autowired
+    private GenreService genreService;
+
+    @Autowired
+    private HumanService humanService;
+
+    @Autowired
+    private NationalityService nationalityService;
+
+    @Autowired
+    private StreamingPlatformService streamingPlatformService;
+
+    @Autowired
+    private PlatformSeriService platformSeriService;
+
+    @Autowired
+    private CountService countService;
+
+    @GetMapping("/admin/series")
+    public String showSeriList(
+            Model model,
+            @RequestParam(required = false) Integer pageNumber
+    ) {
+        if (pageNumber == null) pageNumber = 0;
+        Pageable pageable = PageRequest.of(pageNumber, 20);
+        Page<SeriDTO> page = seriService.selectAll(pageable).map(SeriDTO::new);
+
+        model.addAttribute("series", page);
+        model.addAttribute("count", countService.getTotalCount());
+        model.addAttribute("page", page);
+
+        return "admin/seri/series";
+    }
+
+    @GetMapping("/admin/series/new")
+    public String showSeriForm(Model model) {
+
+        model.addAttribute("seriForm", new SeriForm());
+
+        model.addAttribute("genres", genreService.selectAll().stream().map(GenreDTO::new).toList());
+        model.addAttribute("castings", humanService.selectAll().stream().map(HumanDTO::new).toList());
+        model.addAttribute("nationalities",
+                nationalityService.selectAll().stream().map(NationalityDTO::new).toList());
+        model.addAttribute("platforms",
+                streamingPlatformService.selectAll().stream().map(StreamingPlatformDTO::new).toList());
+        model.addAttribute("editMode", false);
+        model.addAttribute("statuses", SeriStatusEnum.values());
+        return "admin/seri/form";
+    }
+
+    @PostMapping("/admin/series/new")
+    public String newSeri(
+            @Valid SeriForm seriForm,
+            BindingResult bindingResult,
+            Model model
+    ) {
+        if (bindingResult.hasErrors()) {
+            model.addAttribute("genres", genreService.selectAll().stream().map(GenreDTO::new).toList());
+            model.addAttribute("castings", humanService.selectAll().stream().map(HumanDTO::new).toList());
+            model.addAttribute("nationalities",
+                    nationalityService.selectAll().stream().map(NationalityDTO::new).toList());
+            model.addAttribute("platforms",
+                    streamingPlatformService.selectAll().stream().map(StreamingPlatformDTO::new).toList());
+            model.addAttribute("editMode", false);
+            model.addAttribute("statuses", SeriStatusEnum.values());
+            return "admin/seri/form";
+        }
+
+        Seri seri = new Seri();
+        seri.setTitle(seriForm.getTitle());
+        seri.setResume(seriForm.getResume());
+        seri.setPosterURL(seriForm.getPosterURL());
+        seri.setSeasons(seriForm.getSeasons());
+        seri.setEpisode(seriForm.getEpisode());
+        seri.setStaus(seriForm.getStatus());
+
+        seri.setGenres(genreService.selectByIds(seriForm.getGenresId()));
+        seri.setCasting(humanService.selectByIds(seriForm.getCastingId()));
+        seri.setNationalities(nationalityService.selectByIds(seriForm.getNationalitiesId()));
+
+        seriService.insert(seri);
+
+        for (PlatformSeriForm psForm : seriForm.getPlatformSerisId()) {
+            PlatformSeri ps = new PlatformSeri();
+            ps.setSeri(seri);
+            ps.setPlatform(streamingPlatformService.selectById(psForm.getPlatformId()));
+            ps.setEndDate(psForm.getEndDate());
+
+            platformSeriService.insert(ps);
+        }
+
+        return "redirect:/admin/series";
+    }
+
+    @GetMapping("/admin/series/update/{id}")
+    public String showUpdateForm(
+            @PathVariable Integer id,
+            Model model
+    ) {
+        Seri seri = seriService.selectById(id);
+
+        SeriForm seriForm = new SeriForm();
+        seriForm.setTitle(seri.getTitle());
+        seriForm.setResume(seri.getResume());
+        seriForm.setPosterURL(seri.getPosterURL());
+        seriForm.setSeasons(seri.getSeasons());
+        seriForm.setEpisode(seri.getEpisode());
+        seriForm.setStatus(seri.getStaus());
+
+        seriForm.setGenresId(
+                seri.getGenres().stream().map(Genre::getId).toList()
+        );
+        seriForm.setCastingId(
+                seri.getCasting().stream().map(Human::getId).toList()
+        );
+        seriForm.setNationalitiesId(
+                seri.getNationalities().stream().map(Nationality::getId).toList()
+        );
+
+        List<PlatformSeriForm> psfList = new ArrayList<>();
+
+        for (PlatformSeri ps : seri.getPlatformSeris()) {
+            PlatformSeriForm psf = new PlatformSeriForm();
+            psf.setEndDate(ps.getEndDate());
+            psf.setPlatformId(ps.getPlatform().getId());
+
+            psfList.add(psf);
+        }
+
+        seriForm.setPlatformSerisId(psfList);
+
+        model.addAttribute("seriForm", seriForm);
+        model.addAttribute("seriId", id);
+
+        model.addAttribute("genres", genreService.selectAll().stream().map(GenreDTO::new).toList());
+        model.addAttribute("castings", humanService.selectAll().stream().map(HumanDTO::new).toList());
+        model.addAttribute("nationalities",
+                nationalityService.selectAll().stream().map(NationalityDTO::new).toList());
+        model.addAttribute("platforms",
+                streamingPlatformService.selectAll().stream().map(StreamingPlatformDTO::new).toList());
+        model.addAttribute("editMode", true);
+        model.addAttribute("statuses", SeriStatusEnum.values());
+
+        return "admin/seri/form";
+    }
+
+    @PostMapping("/admin/series/update/{id}")
+    public String updateSeri(
+            @PathVariable Integer id,
+            @Valid SeriForm seriForm,
+            BindingResult bindingResult,
+            Model model
+    ) {
+        if (bindingResult.hasErrors()) {
+            model.addAttribute("seriForm", seriForm);
+            model.addAttribute("seriId", id);
+
+            model.addAttribute("genres", genreService.selectAll().stream().map(GenreDTO::new).toList());
+            model.addAttribute("castings", humanService.selectAll().stream().map(HumanDTO::new).toList());
+            model.addAttribute("nationalities",
+                    nationalityService.selectAll().stream().map(NationalityDTO::new).toList());
+            model.addAttribute("platforms",
+                    streamingPlatformService.selectAll().stream().map(StreamingPlatformDTO::new).toList());
+            model.addAttribute("editMode", true);
+            model.addAttribute("statuses", SeriStatusEnum.values());
+
+            return "admin/seri/form";
+        }
+
+        Seri seri = seriService.selectById(id);
+        seri.setTitle(seriForm.getTitle());
+        seri.setResume(seriForm.getResume());
+        seri.setPosterURL(seriForm.getPosterURL());
+        seri.setSeasons(seriForm.getSeasons());
+        seri.setEpisode(seriForm.getEpisode());
+        seri.setStaus(seriForm.getStatus());
+
+        seri.setGenres(genreService.selectByIds(seriForm.getGenresId()));
+        seri.setCasting(humanService.selectByIds(seriForm.getCastingId()));
+        seri.setNationalities(nationalityService.selectByIds(seriForm.getNationalitiesId()));
+
+        seriService.update(seri);
+        seriService.updatePlatformSeries(seri, seriForm.getPlatformSerisId());
+
+        return "redirect:/admin/series";
+    }
+
+    @PostMapping("/admin/series/delete/{id}")
+    public String deleteSeri(@PathVariable Integer id) {
+        seriService.delete(id);
+        return "redirect:/admin/series";
+    }
+}

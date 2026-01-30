@@ -8,11 +8,13 @@ import java.util.List;
 
 @Data
 public class NationalityDTO {
+    private Integer id;
     private String name;
     private String flagUrl;
     private List<HumanLightDTO> humans;
 
     public NationalityDTO(Nationality nationality) {
+        this.id = nationality.getId();
         this.name = nationality.getName();
         this.flagUrl = nationality.getFlagUrl();
         this.humans = nationality.getHumans().stream().map(HumanLightDTO::new).toList();

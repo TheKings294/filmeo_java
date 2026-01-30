@@ -5,6 +5,8 @@ import com.filmeo.webapp.error.ErrorType;
 import com.filmeo.webapp.model.entity.StreamingPlatform;
 import com.filmeo.webapp.model.repository.StreamingPlatformRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -16,6 +18,10 @@ public class StreamingPlatformService {
 
     public List<StreamingPlatform> selectAll() {
         return this.streamingPlatformRepository.findAll();
+    }
+
+    public Page<StreamingPlatform> selectAll(Pageable pageable) {
+        return this.streamingPlatformRepository.findAll(pageable);
     }
 
     public StreamingPlatform selectById(Integer id) throws BusinessException {

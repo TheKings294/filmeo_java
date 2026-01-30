@@ -29,6 +29,50 @@
 
         </div>
 
+        <div class="flex justify-center mt-5"
+             th:if="${page.totalPages > 1}">
+
+            <div class="inline-flex items-center gap-2 mb-1">
+
+                <!-- PREVIOUS -->
+                <a th:if="${page.hasPrevious()}"
+                   th:href="@{${currentPath}(pageNumber=${page.number - 1})}"
+                   class="px-5 py-2 rounded-lg bg-neutral-900 border border-neutral-800
+                  text-neutral-300 hover:bg-neutral-800 hover:text-white
+                  transition">
+                    ← Prev
+                </a>
+
+                <span th:unless="${page.hasPrevious()}"
+                      class="px-5 py-2 rounded-lg bg-neutral-950 border border-neutral-900
+                     text-neutral-600 cursor-not-allowed">
+                    ← Prev
+                </span>
+
+                <!-- PAGE INFO -->
+                <span class="px-4 py-2 text-sm text-neutral-400">
+                    Page <span th:text="${page.number + 1}"></span>
+                    /
+                <span th:text="${page.totalPages}"></span>
+                </span>
+
+                <!-- NEXT -->
+                <a th:if="${page.hasNext()}"
+                   th:href="@{${currentPath}(pageNumber=${page.number + 1})}"
+                   class="px-5 py-2 rounded-lg bg-red-600 text-white
+                  hover:bg-red-700 transition">
+                    Next →
+                </a>
+
+                <span th:unless="${page.hasNext()}"
+                      class="px-5 py-2 rounded-lg bg-neutral-950 border border-neutral-900
+                     text-neutral-600 cursor-not-allowed">
+                    Next →
+                </span>
+
+            </div>
+        </div>
+
         <div th:if="${movies == null or #lists.isEmpty(movies)}"
              class="text-center text-gray-400 mt-10">
             <p>No movies found 🎬</p>

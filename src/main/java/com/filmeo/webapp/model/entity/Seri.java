@@ -43,7 +43,7 @@ public class Seri extends BaseContent {
     )
     private List<Nationality> nationalities = new ArrayList<Nationality>();
 
-    @OneToMany(mappedBy = "seri")
+    @OneToMany(mappedBy = "seri", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<PlatformSeri> platformSeris = new ArrayList<PlatformSeri>();
 
     @OneToMany(mappedBy = "seri")
