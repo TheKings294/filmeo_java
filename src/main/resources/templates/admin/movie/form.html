@@ -90,6 +90,19 @@
                        class="text-red-500 text-sm mt-1">
                     </p>
                 </div>
+
+                <div>
+                    <label class="block text-sm text-neutral-300 mb-2">Realisator *</label>
+                    <select th:field="*{realId}"
+                            class="w-full bg-neutral-900 text-white px-4 py-3 rounded-lg border border-neutral-800"
+                            th:classappend="${#fields.hasErrors('realId')} ? 'border-red-600' : ''">
+                        <option value="">-- Select real --</option>
+                        <option th:each="d : ${directors}"
+                                th:value="${d.id}"
+                                th:text="${d.firstName + d.lastName}"></option>
+                    </select>
+                    <p th:errors="*{realId}" class="text-red-500 text-sm mt-1"></p>
+                </div>
             </div>
         </div>
 
@@ -140,20 +153,26 @@
             </div>
         </div>
 
-        <!-- DIRECTORS -->
         <div class="bg-neutral-950 rounded-lg border border-neutral-800 p-6">
-            <h2 class="text-xl font-semibold text-white mb-6">Directors</h2>
+            <h2 class="text-xl font-semibold text-white mb-6">Nationalities</h2>
 
-            <div class="space-y-2 max-h-64 overflow-y-auto">
-                <label th:each="d : ${directors}"
-                       class="flex items-center gap-3 p-3 bg-neutral-900 rounded-lg hover:bg-neutral-800 cursor-pointer">
+            <div class="flex flex-wrap gap-3">
+                <label th:each="n : ${nationalities}"
+                       class="cursor-pointer m-1">
                     <input type="checkbox"
-                           th:value="${d.id}"
-                           th:field="*{castingId}"
-                           class="w-4 h-4 text-red-600">
-                    <span class="text-white"
-                          th:text="${d.firstName + ' ' + d.lastName}"></span>
+                           th:value="${n.id}"
+                           th:field="*{nationalitiesId}"
+                           class="hidden peer">
+                    <span
+                            class="px-4 py-2 rounded-lg bg-neutral-800 text-neutral-300 peer-checked:bg-red-600 peer-checked:text-white">
+                    <span th:text="${n.name}"></span>
+                </span>
                 </label>
+
+                <p th:if="${#fields.hasErrors('nationalitiesId')}"
+                   th:errors="*{nationalitiesId}"
+                   class="text-red-500 text-sm mt-2">
+                </p>
             </div>
         </div>
 
@@ -172,7 +191,7 @@
                 <div class="space-y-4 mb-4"
                      th:each="pm, stat : *{platformMoviesId}">
 
-                    <div class="p-4 bg-neutral-900 rounded-lg border border-neutral-800 space-y-3">
+                    <div class="platform-movie-row p-4 bg-neutral-900 rounded-lg border border-neutral-800 space-y-3">
 
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
                             <div>
@@ -243,6 +262,7 @@
         <div class="mb-4">
             <label class="block text-sm text-neutral-300 mb-2">Platform</label>
             <select id="platformSelect"
+                    name="platformId"
                     class="w-full bg-neutral-900 text-white px-3 py-2 rounded-lg border border-neutral-800">
                 <option value="">Select a platform</option>
                 <option th:each="p : ${platforms}"
@@ -258,6 +278,7 @@
                 End date (optional)
             </label>
             <input type="date"
+                   name="endDate"
                    id="platformEndDate"
                    class="w-full bg-neutral-900 text-white px-3 py-2 rounded-lg border border-neutral-800">
         </div>

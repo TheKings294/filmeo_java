@@ -26,7 +26,7 @@ function addPlatformMovie() {
 
                 <div>
                     <label class="block text-sm text-neutral-300 mb-2">Platform</label>
-                    <select name="platformSerisId[${platformMovieIndex}].platformId"
+                    <select name="platformMoviesId[${platformMovieIndex}].platformId"
                             class="w-full bg-neutral-800 text-white px-3 py-2 rounded-lg border border-neutral-700">
                         <option value="">-- Select --</option>
                         ${buildPlatformOptions(platformId)}
@@ -36,7 +36,7 @@ function addPlatformMovie() {
                 <div>
                     <label class="block text-sm text-neutral-300 mb-2">End Date</label>
                     <input type="date"
-                           name="platformSerisId[${platformMovieIndex}].endDate"
+                           name="platformMoviesId[${platformMovieIndex}].endDate"
                            value="${endDate ?? ''}"
                            class="w-full bg-neutral-800 text-white px-3 py-2 rounded-lg border border-neutral-700">
                 </div>
@@ -67,5 +67,5 @@ function buildPlatformOptions(selectedId) {
 }
 
 function removePlatform(button) {
-    button.closest('.p-4').remove();
+    button.closest('.platform-movie-row').remove();
 }

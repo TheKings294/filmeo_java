@@ -211,15 +211,7 @@ public class MoviesAdminController {
         movie.setNationalities(nationalityService.selectByIds(movieForm.getNationalitiesId()));
 
         movieService.update(movie);
-
-        for (PlatformMovieForm pmForm : movieForm.getPlatformMoviesId()) {
-            PlatformMovie pm = new PlatformMovie();
-            pm.setMovie(movie);
-            pm.setPlatform(streamingPlatformService.selectById(pmForm.getPlatformId()));
-            pm.setEndDate(pmForm.getEndDate());
-
-            platformMovieService.update(pm);
-        }
+        movieService.updatePlatformMovies(movie, movieForm.getPlatformMoviesId());
 
         return "redirect:/admin/movies";
     }

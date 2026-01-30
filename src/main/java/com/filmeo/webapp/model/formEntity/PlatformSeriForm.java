@@ -1,5 +1,6 @@
 package com.filmeo.webapp.model.formEntity;
 
+import jakarta.validation.constraints.Future;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -13,5 +14,6 @@ public class PlatformSeriForm {
 
     @NotNull(message = "End date is required")
     @DateTimeFormat(pattern = "yyyy-MM-dd")
+    @Future
     private LocalDate endDate;
 }

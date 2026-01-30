@@ -67,5 +67,5 @@ function buildPlatformOptions(selectedId) {
 }
 
 function removePlatform(button) {
-    button.closest('.p-4').remove();
+    button.closest('.platform-seri-row').remove();
 }

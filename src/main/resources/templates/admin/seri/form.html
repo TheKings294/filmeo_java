@@ -143,6 +143,29 @@
             <p th:errors="*{castingId}" class="text-red-500 text-sm mt-2"></p>
         </div>
 
+        <div class="bg-neutral-950 rounded-lg border border-neutral-800 p-6">
+            <h2 class="text-xl font-semibold text-white mb-6">Nationalities</h2>
+
+            <div class="flex flex-wrap gap-3">
+                <label th:each="n : ${nationalities}"
+                       class="cursor-pointer m-1">
+                    <input type="checkbox"
+                           th:value="${n.id}"
+                           th:field="*{nationalitiesId}"
+                           class="hidden peer">
+                    <span
+                            class="px-4 py-2 rounded-lg bg-neutral-800 text-neutral-300 peer-checked:bg-red-600 peer-checked:text-white">
+                    <span th:text="${n.name}"></span>
+                </span>
+                </label>
+
+                <p th:if="${#fields.hasErrors('nationalitiesId')}"
+                   th:errors="*{nationalitiesId}"
+                   class="text-red-500 text-sm mt-2">
+                </p>
+            </div>
+        </div>
+
         <!-- PLATFORMS -->
         <div class="bg-neutral-950 rounded-lg border border-neutral-800 p-6">
             <section class="flex flex-row justify-between mb-2">
@@ -156,7 +179,7 @@
 
             <section id="platformSerieContainer">
                 <div th:each="ps, stat : *{platformSerisId}"
-                     class="p-4 bg-neutral-900 rounded-lg border border-neutral-800 mb-4">
+                     class="platform-seri-row p-4 bg-neutral-900 rounded-lg border border-neutral-800 mb-4">
 
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                         <div>

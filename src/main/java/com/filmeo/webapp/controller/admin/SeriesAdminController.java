@@ -214,15 +214,7 @@ public class SeriesAdminController {
         seri.setNationalities(nationalityService.selectByIds(seriForm.getNationalitiesId()));
 
         seriService.update(seri);
-
-        for (PlatformSeriForm psForm : seriForm.getPlatformSerisId()) {
-            PlatformSeri ps = new PlatformSeri();
-            ps.setSeri(seri);
-            ps.setPlatform(streamingPlatformService.selectById(psForm.getPlatformId()));
-            ps.setEndDate(psForm.getEndDate());
-
-            platformSeriService.insert(ps);
-        }
+        seriService.updatePlatformSeries(seri, seriForm.getPlatformSerisId());
 
         return "redirect:/admin/series";
     }
