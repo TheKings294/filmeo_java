@@ -18,6 +18,9 @@ public class SeriForm {
 
     private String posterURL;
 
+    @NotNull
+    private Integer realiseYear;
+
     @NotNull(message = "Number of seasons is required")
     @Min(value = 1, message = "There must be at least 1 season")
     private Integer seasons;

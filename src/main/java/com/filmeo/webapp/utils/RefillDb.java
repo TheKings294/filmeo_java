@@ -134,6 +134,7 @@ public class RefillDb {
             movie.setPosterURL(i % 2 == 0 ? "https://media.themoviedb.org/t/p/w300_and_h450_face/9ZmdDOIbiFCZOvRXBQ7muWUu32l.jpg" :
                     "https://media.themoviedb.org/t/p/w300_and_h450_face/kQYx143yujkwyjJdZH2skOGeQfA.jpg");
             movie.setRealisator(humanRepository.findAll().get(getRandom(0, humanRepository.findAll().size() - 1)));
+            movie.setRealiseYear(getRandom(1800, 2025));
 
             for (int j = 0; j < getRandom(1, 10); j++) {
                 List<Human> casting = movie.getCasting();
@@ -174,6 +175,7 @@ public class RefillDb {
             seri.setStaus(i % 2 == 0 ? SeriStatusEnum.FINISH : SeriStatusEnum.IN_PROGRESS);
             seri.setSeasons(getRandom(1, 8));
             seri.setEpisode(seri.getSeasons() * 20);
+            seri.setRealiseYear(getRandom(1800, 2025));
 
             for (int j = 0; j < getRandom(1, 10); j++) {
                 List<Human> casting = seri.getCasting();

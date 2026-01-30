@@ -2,6 +2,7 @@ package com.filmeo.webapp.model.entity;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.MappedSuperclass;
+import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 
 @Data
@@ -14,4 +15,7 @@ public abstract class BaseContent extends BaseEntity {
     private String resume;
 
     private String posterURL;
+
+    @NotNull
+    private Integer realiseYear;
 }
