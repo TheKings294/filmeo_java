@@ -1,5 +1,6 @@
 package com.filmeo.webapp.controller;
 
+import com.filmeo.webapp.model.dto.MediaDTO;
 import com.filmeo.webapp.model.dto.movie.MovieDTO;
 import com.filmeo.webapp.model.dto.seri.SeriDTO;
 import com.filmeo.webapp.model.entity.Movie;
@@ -11,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -53,6 +55,32 @@ public class HomeController {
         model.addAttribute("movies", movies);
         model.addAttribute("series", series);
         model.addAttribute("content", "public/home");
+
+        return "base";
+    }
+
+    @GetMapping("/search")
+    public String search(
+            Model model,
+            @RequestParam String keyWord
+    ) {
+        List<MediaDTO> medias = new ArrayList<>();
+        Map<Integer, Double> avgByMovieId = new HashMap<>();
+        Map<Integer, Double> avgBySeriId = new HashMap<>();
+
+        seriService.searchSeries(keyWord).forEach(seri -> {
+            medias.add(MediaDTO.fromSeries(seri));
+            avgBySeriId.put(seri.getId(), seriService.avgRate(seri.getId()));
+        });
+        movieService.searchMovies(keyWord).forEach(movie -> {
+            medias.add(MediaDTO.fromMovie(movie));
+            avgByMovieId.put(movie.getId(), movieService.avgRate(movie.getId()));
+        });
+
+        model.addAttribute("medias", medias);
+        model.addAttribute("avgByMovieId", avgByMovieId);
+        model.addAttribute("avgBySeriId", avgBySeriId);
+        model.addAttribute("content", "public/search/search");
 
         return "base";
     }

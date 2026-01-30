@@ -123,4 +123,8 @@ public class SeriService {
         // Optional: save parent, Hibernate flushes automatically due to @Transactional
         seriRepository.save(managedSeri);
     }
+
+    public List<Seri> searchSeries(String keyWord) {
+        return seriRepository.searchByKeyword(keyWord);
+    }
 }

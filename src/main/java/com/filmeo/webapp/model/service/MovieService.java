@@ -120,4 +120,7 @@ public class MovieService {
         movieRepository.save(managedMovie);
     }
 
+    public List<Movie> searchMovies(String keyWord) {
+        return movieRepository.searchByKeyword(keyWord);
+    }
 }
