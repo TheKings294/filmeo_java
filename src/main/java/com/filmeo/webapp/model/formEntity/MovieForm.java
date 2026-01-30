@@ -20,6 +20,9 @@ public class MovieForm {
     private String posterURL;
 
     @NotNull
+    private Integer realiseYear;
+
+    @NotNull
     private Integer realId;
 
     @NotNull(message = "At least one genre is required")

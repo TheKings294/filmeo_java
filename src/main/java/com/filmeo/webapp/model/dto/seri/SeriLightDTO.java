@@ -10,6 +10,7 @@ public class SeriLightDTO {
     private String title;
     private String resume;
     private String poster;
+    private Integer realiseYear;
     private Integer seasons;
     private Integer episode;
     private SeriStatusEnum staus;
@@ -19,6 +20,7 @@ public class SeriLightDTO {
         this.title = seri.getTitle();
         this.resume = seri.getResume();
         this.poster = seri.getPosterURL();
+        this.realiseYear = seri.getRealiseYear();
         this.seasons = seri.getSeasons();
         this.episode = seri.getEpisode();
         this.staus = seri.getStaus();

@@ -140,6 +140,7 @@ public class SeriesAdminController {
         seriForm.setSeasons(seri.getSeasons());
         seriForm.setEpisode(seri.getEpisode());
         seriForm.setStatus(seri.getStaus());
+        seriForm.setRealiseYear(seri.getRealiseYear());
 
         seriForm.setGenresId(
                 seri.getGenres().stream().map(Genre::getId).toList()

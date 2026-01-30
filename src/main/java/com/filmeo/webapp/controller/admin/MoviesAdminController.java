@@ -139,6 +139,7 @@ public class MoviesAdminController {
         movieForm.setResume(movie.getResume());
         movieForm.setPosterURL(movie.getPosterURL());
         movieForm.setRealId(movie.getRealisator().getId());
+        movieForm.setRealiseYear(movie.getRealiseYear());
 
         movieForm.setGenresId(
                 movie.getGenres().stream().map(Genre::getId).toList()

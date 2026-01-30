@@ -49,7 +49,7 @@
             <tr     th:each="m : ${movies}"
                     class="border-b border-neutral-800">
                 <td class="px-4 py-3" th:text="${m.title}">Inception</td>
-                <td class="px-4 py-3">2010</td>
+                <td class="px-4 py-3" th:text="${m.realiseYear}">2010</td>
                 <td class="px-4 py-3 flex flex-row gap-2">
                     <a class="text-red-500" th:href="@{/admin/movies/delete/{id}(id=${m.id})}">
                         <svg xmlns="http://www.w3.org/2000/svg"

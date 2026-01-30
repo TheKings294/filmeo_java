@@ -71,6 +71,19 @@
                            class="w-full bg-neutral-900 text-white px-4 py-3 rounded-lg border border-neutral-800">
                 </div>
 
+                <div>
+                    <label class="block text-sm font-medium text-neutral-300 mb-2">Realise year *</label>
+                    <input type="number"
+                           th:field="*{realiseYear}"
+                           class="w-full bg-neutral-900 text-white px-4 py-3 rounded-lg border border-neutral-800 focus:border-red-600"
+                           required>
+
+                    <p th:if="${#fields.hasErrors('realiseYear')}"
+                       th:errors="*{realiseYear}"
+                       class="text-red-500 text-sm mt-1">
+                    </p>
+                </div>
+
                 <!-- SEASONS / EPISODES -->
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div>

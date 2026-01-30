@@ -15,6 +15,7 @@ public class MovieDTO {
     private String title;
     private String resume;
     private String poster;
+    private Integer realiseYear;
     private HumanLightDTO real;
     private List<Genre> genres;
     private List<HumanLightDTO> casting;
@@ -27,6 +28,7 @@ public class MovieDTO {
         this.title = movie.getTitle();
         this.resume = movie.getResume();
         this.poster = movie.getPosterURL();
+        this.realiseYear = movie.getRealiseYear();
         this.real = new HumanLightDTO(movie.getRealisator());
         this.genres = movie.getGenres();
         this.casting = movie.getCasting().stream().map(HumanLightDTO::new).toList();

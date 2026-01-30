@@ -37,7 +37,6 @@ public class RegisterController {
         if (bindingResult.hasErrors()) {
             model.addAttribute("userForm", userForm);
             model.addAttribute("content", "security/register");
-            System.out.println(bindingResult.toString());
             return "base";
         }
 

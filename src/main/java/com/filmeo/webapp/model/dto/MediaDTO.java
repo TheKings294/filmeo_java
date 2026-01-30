@@ -11,6 +11,7 @@ public class MediaDTO {
     private String resume;
     private String poster;
     private String type; // "MOVIE" or "SERIES"
+    private Integer realiseYear;
 
     public static MediaDTO fromMovie(Movie movie) {
         MediaDTO dto = new MediaDTO();
@@ -19,6 +20,7 @@ public class MediaDTO {
         dto.setResume(movie.getResume());
         dto.setPoster(movie.getPosterURL());
         dto.setType("MOVIE");
+        dto.setRealiseYear(movie.getRealiseYear());
         return dto;
     }
 
@@ -29,6 +31,7 @@ public class MediaDTO {
         dto.setResume(series.getResume());
         dto.setPoster(series.getPosterURL());
         dto.setType("SERI");
+        dto.setRealiseYear(series.getRealiseYear());
         return dto;
     }
 }

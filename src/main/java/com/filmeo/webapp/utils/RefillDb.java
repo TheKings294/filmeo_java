@@ -102,7 +102,8 @@ public class RefillDb {
             Human human = new Human();
             human.setFirstName(faker.name().firstName());
             human.setLastName(faker.name().lastName());
-            human.setProfilePicture(faker.internet().avatar());
+            human.setProfilePicture(i % 2 == 0 ? "https://media.themoviedb.org/t/p/w300_and_h450_face/nraZoTzwJQPHspAVsKfgl3RXKKa.jpg" :
+                    "https://media.themoviedb.org/t/p/w300_and_h450_face/o7sfT7EBtzxwiJiKmCafoebJQ2q.jpg");
             human.setGender(i % 2 == 0 ? GenderEnum.MALE : GenderEnum.FEMALE);
             Date birthDate = faker.date().birthday(20, 100);
             human.setBirthDate(convertToLocalDate(birthDate));
@@ -130,8 +131,10 @@ public class RefillDb {
             Movie movie = new Movie();
             movie.setTitle(faker.book().title());
             movie.setResume(faker.lorem().sentence(80));
-            movie.setPosterURL(faker.internet().avatar());
+            movie.setPosterURL(i % 2 == 0 ? "https://media.themoviedb.org/t/p/w300_and_h450_face/9ZmdDOIbiFCZOvRXBQ7muWUu32l.jpg" :
+                    "https://media.themoviedb.org/t/p/w300_and_h450_face/kQYx143yujkwyjJdZH2skOGeQfA.jpg");
             movie.setRealisator(humanRepository.findAll().get(getRandom(0, humanRepository.findAll().size() - 1)));
+            movie.setRealiseYear(getRandom(1800, 2025));
 
             for (int j = 0; j < getRandom(1, 10); j++) {
                 List<Human> casting = movie.getCasting();
@@ -167,10 +170,12 @@ public class RefillDb {
             Seri seri = new Seri();
             seri.setTitle(faker.book().title());
             seri.setResume(faker.lorem().sentence(80));
-            seri.setPosterURL(faker.internet().avatar());
+            seri.setPosterURL(i % 2 == 0 ? "https://media.themoviedb.org/t/p/w300_and_h450_face/AoRfDyk5uTCtQn4O9Q8g5Bk2A1c.jpg"
+                    : "https://media.themoviedb.org/t/p/w300_and_h450_face/4Y5ZXYnWBIV8Vpe8hcA0LH6hC80.jpg");
             seri.setStaus(i % 2 == 0 ? SeriStatusEnum.FINISH : SeriStatusEnum.IN_PROGRESS);
             seri.setSeasons(getRandom(1, 8));
             seri.setEpisode(seri.getSeasons() * 20);
+            seri.setRealiseYear(getRandom(1800, 2025));
 
             for (int j = 0; j < getRandom(1, 10); j++) {
                 List<Human> casting = seri.getCasting();

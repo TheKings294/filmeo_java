@@ -11,7 +11,9 @@
 
             <!-- Logo -->
             <a th:href="@{/}" class="flex items-center gap-2">
-                <span class="text-red-600 text-2xl">🎞️</span>
+                <span class="text-red-600 text-2xl">
+                    <img th:src="@{/image/logo.png}" class="size-16 rounded-xl">
+                </span>
                 <span class="text-white text-xl font-bold">CineStream</span>
             </a>
 
@@ -44,14 +46,17 @@
         <!-- Center: Search -->
         <div class="flex-1 max-w-xl mx-8 hidden lg:block">
             <div class="relative">
-                <input
-                        type="text"
-                        placeholder="Search movies & series..."
-                        class="w-full bg-neutral-900 border border-neutral-700 rounded-xl py-3 pl-11 pr-4 text-sm text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-red-600"
-                />
-                <span class="absolute left-4 top-3.5 text-gray-500">
+                <form method="get" th:action="@{/search}">
+                    <input
+                            type="text"
+                            name="keyWord"
+                            placeholder="Search movies & series..."
+                            class="w-full bg-neutral-900 border border-neutral-700 rounded-xl py-3 pl-11 pr-4 text-sm text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-red-600"
+                    />
+                    <span class="absolute left-4 top-3.5 text-gray-500">
                     <i class="fa-solid fa-magnifying-glass"></i>
-                </span>
+                    </span>
+                </form>
             </div>
         </div>
 
@@ -68,6 +73,7 @@
                 Admin
             </a>
             <a sec:authorize="isAuthenticated()"
+               th:href="@{/me}"
                 class="bg-neutral-900 border border-neutral-700 rounded-xl transition text-white px-6 py-2.5 rounded-xl text-sm mr-4">
                 <span sec:authentication="name"></span>
             </a>

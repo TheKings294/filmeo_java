@@ -21,6 +21,7 @@ public class UserForm {
     @NotBlank(message = "The password is required")
     /*@Pattern(regexp = "/^\\S{3,}$/",
             message = "The password mut be respect min 8 length, upper letter, lower letter, and special char and number")*/
+    @Size(min = 8)
     private String password;
 
     @NotBlank(message = "The password confirmation is required")
